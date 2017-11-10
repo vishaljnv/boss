@@ -63,6 +63,10 @@ def get_account_types_collection(db):
     return db[ACCOUNT_TYPES_COLLECTION_NAME]
 
 
+def get_transactions_collection(db):
+    return db[TRANSACTIONS_COLLECTION_NAME]
+
+
 def account_number_exists(acc_num):
     return bool(accounts.find_one({"number":acc_num}))
 

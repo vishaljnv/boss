@@ -5,6 +5,7 @@ import json
 import sys
 import getopt
 import uuid
+import datetime
 
 from thread import *
 from constants import *
@@ -81,7 +82,7 @@ def freeze_account(request):
     put_account_on_hold_by_username(username)
 
 
-def transfer(request):
+def validate_funds_transfer(request):
     msg = {}
 
     username = request.get("username")
@@ -113,14 +114,136 @@ def transfer(request):
         return msg
 
     if exceeds_daily_transfer_limit(account_type, amount)
-        msg["errmsg"] = 'This transaction exceeds daily transfer limit'
+        msg["errmsg"] = 'This transaction exceeds daily transaction limit'
         msg["result"] = 'failed'
         return msg
+
+    msg["result"] = 'passed'
+    return msg
+
+
+def transfer(request):
+    msg = {}
+
+    username = request.get("username")
+    payer_acc = get_account_details_by_username(username)
+    payee_acc = get_account_details_by_account_number(request["account_number"])
+    amount = request["amount"]
+
+    validation = validate_funds_transfer(request)
+    if validation["result"] != 'passed':
+        return validation
+
+    transaction = {}
+    transaction["account_number"] = payer_acc["number"]
+    transaction["type"] = TRANSACTION_TYPE_TRANSFER
+    transaction["credits"] = 0
+    transaction["debits"] = amount
+    transaction["date"] = datetime.datetime.today().strftime("%m/%d/%y")
+    add_transaction_to_db(transaction)
+
+    transaction["account_number"] = payee_acc["number"]
+    transaction["type"] = TRANSACTION_TYPE_TRANSFER
+    transaction["credits"] = amount
+    transaction["debits"] = 0
+    add_transaction_to_db(transaction)
 
     payee_new_balance = payee_acc["balance"] + amount
     payer_new_balance = payer_acc["balance"] - amount
 
-    add_transaction_to_db()
+    update_account_balance(payee_acc["number"], payee_new_balance)
+    update_account_balance(payer_acc["number"], payer_new_balance)
+
+    msg["result"] = 'passed'
+    msg["errmsg"] = 'Transfer Complete!'
+    return msg
+
+
+def validate_deposit_or_withdraw(request):
+    msg = {}
+
+    username = request.get("username")
+    account = get_account_details_by_username(username)
+    amount = request["amount"]
+
+    if not username_exists(username):
+        raise Exception("User account does not exist!")
+
+    if not account:
+        msg["errmsg"] = 'Invalid account number'
+        msg["result"] = 'failed'
+        return msg
+
+    account_type = account["type"]
+    if account_type == ACCOUNT_TYPE_DEPOSIT:
+        msg["errmsg"] = 'Transfer not allowed to/from deposit account'
+        msg["result"] = 'failed'
+        return msg
+
+    if is_account_on_hold(username):
+        msg["errmsg"] = 'Account put on hold'
+        msg["result"] = 'failed'
+        return msg
+
+    if exceeds_daily_transfer_limit(account_type, amount)
+        msg["errmsg"] = 'This transaction exceeds daily transaction limit'
+        msg["result"] = 'failed'
+        return msg
+
+    msg["result"] = 'passed'
+    return msg
+
+
+def deposit(request):
+    msg = {}
+    acc_num = request.get("account_number")
+    account = get_account_details_by_account_number(acc_num)
+    amount = request["amount"]
+
+    validation = validate_deposit_or_withdraw(request)
+    if validation["result"] != 'passed':
+        return validation
+
+    transaction = {}
+    transaction["account_number"] = acc_num
+    transaction["type"] = TRANSACTION_TYPE_DEPOSIT
+    transaction["credits"] = amount
+    transaction["debits"] = 0
+    transaction["date"] = datetime.datetime.today().strftime("%m/%d/%y")
+    add_transaction_to_db(transaction)
+
+    new_balance = account["balance"] + amount
+    update_account_balance(acc_num, new_balance)
+
+    msg["result"] = 'passed'
+    msg["errmsg"] = 'Deposit Complete!'
+    return msg
+
+
+def withdraw(request):
+    msg = {}
+    acc_num = request.get("account_number")
+    account = get_account_details_by_account_number(acc_num)
+    amount = request["amount"]
+
+    validation = validate_deposit_or_withdraw(request)
+    if validation["result"] != 'passed':
+        return validation
+
+    transaction = {}
+    transaction["account_number"] = acc_num
+    transaction["type"] = TRANSACTION_TYPE_WITHDRAW
+    transaction["credits"] = 0
+    transaction["debits"] = amount
+    transaction["date"] = datetime.datetime.today().strftime("%m/%d/%y")
+    add_transaction_to_db(transaction)
+
+    new_balance = account["balance"] - amount
+    update_account_balance(acc_num, new_balance)
+
+    msg["result"] = 'passed'
+    msg["errmsg"] = 'Withdraw Complete!'
+    return msg
 
 
 def handleClient(con):

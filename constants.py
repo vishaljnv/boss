@@ -2,6 +2,7 @@ DB_NAME                           = "bank"
 ACCOUNTS_COLLECTION_NAME          = "accounts"
 ACCOUNT_TYPES_COLLECTION_NAME     = "account_types"
 USERS_COLLECTION_NAME             = 'users'
+TRANSACTIONS_COLLECTION_NAME      = 'transactions'
 
 PASSWORD_MIN_LENGTH       = 8
 USERNAME_MIN_LENGTH       = 8
@@ -20,3 +21,11 @@ CHECKING_DAILY_TRANSFER_LIMIT     = 5000
 ACCOUNT_TYPE_SAVINGS              = 'Savings'
 ACCOUNT_TYPE_CHECKING             = 'Checking'
 ACCOUNT_TYPE_DEPOSIT              = 'Deposit'
+
+USER_TYPE_CUSTOMER                = 'customer'
+USER_TYPE_TELLER                  = 'teller'
+USER_TYPE_ADMIN                   = 'admin'
+
+TRANSACTION_TYPE_TRANSFER         = 'transfer'
+TRANSACTION_TYPE_DEPOSIT          = 'deposit'
+TRANSACTION_TYPE_WITHDRAW         = 'withdraw'

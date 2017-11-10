@@ -66,6 +66,16 @@ def insert_user_account_into_database(user):
     users.insert(user)
 
 
+def add_transaction_to_db(transaction):
+    transactions = get_transactions_collection(db)
+    transactions.insert(transaction)
+
+
+def update_account_balance(acc_num, new_bal):
+    accounts = get_accounts_collection(db)
+    accounts.update({"number":acc_num},{"$set":{"balance":new_bal}})
+
+
 def create_customer_account(account_type, name, email):
     account = {}
     user = {}
