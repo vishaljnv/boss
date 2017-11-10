@@ -8,9 +8,13 @@ app.secret_key = os.urandom(24)
 @app.route('/', methods=['GET','POST'])
 def index():
     if request.method == 'POST':
-        if request.form['password'] == 'password':
-            session['user'] = request.form['username']
-            return redirect(url_for('home'))
+        username = request.form.get('username')
+        account = accounts.find_one({'username':username})
+        if not account:
+            return login_failed()
+
+        session['user'] = request.form['username']
+        return redirect(url_for('home'))
 
     return render_template('index.html')
 

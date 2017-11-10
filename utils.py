@@ -55,6 +55,10 @@ def get_accounts_collection(db):
     return db[ACCOUNTS_COLLECTION_NAME]
 
 
+def get_users_collection(db):
+    return db[USERS_COLLECTION_NAME]
+
+
 def get_account_types_collection(db):
     return db[ACCOUNT_TYPES_COLLECTION_NAME]
 

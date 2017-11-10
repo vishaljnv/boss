@@ -5,27 +5,70 @@ mongo_con = get_mongo_connection()
 db = get_banking_db(mongo_con)
 
 def account_number_exists(acc_num):
-    accounts = get_account_types_collection(db)
+    accounts = get_accounts_collection(db)
     return bool(accounts.find_one({"number":acc_num}))
 
 
 def username_exists(username):
-    accounts = get_account_types_collection(db)
-    return bool(accounts.find_one({"username":username}))
+    users = get_users_collection(db)
+    return bool(users.find_one({"username":username}))
+
+
+def exceeds_daily_transfer_limit(account_type, amount):
+    if account_type == ACCOUNT_TYPE_SAVINGS:
+        if amount > SAVINGS_DAILY_TRANSFER_LIMIT:
+            return True
+    if account_type == ACCOUNT_TYPE_CHECKING:
+        if amount > CHECKING_DAILY_TRANSFER_LIMIT:
+            return True
+
+    return False
 
 
 def get_account_details_by_username(username):
-    accounts = get_account_types_collection(db)
+    accounts = get_accounts_collection(db)
     return accounts.find_one({"username":username})
 
 
-def insert_account_into_database(account):
-    accounts = get_account_types_collection(db)
+def delete_bank_acccount_by_username(username):
+    accounts = get_accounts_collection(db)
+    accounts.remove({"username":username})
+
+
+def delete_user_acccount_by_username(username):
+    users = get_users_collection(db)
+    users.remove({"username":username})
+
+
+def put_account_on_hold_by_username(username):
+    accounts = get_accounts_collection(db)
+    accounts.update({"username":username},{"$set":{"hold":True}})
+
+
+def is_account_on_hold(username):
+    accounts = get_accounts_collection(db)
+    account =  accounts.find_one({"username":username})
+    return account.get("hold",False)
+
+
+def get_account_details_by_account_number(account_number):
+    accounts = get_accounts_collection(db)
+    return accounts.find_one({"number":account_number})
+
+
+def insert_bank_account_into_database(account):
+    accounts = get_accounts_collection(db)
     accounts.insert(account)
 
 
-def create_account(account_type, name, email):
+def insert_user_account_into_database(user):
+    users = get_users_collection(db)
+    users.insert(user)
+
+
+def create_customer_account(account_type, name, email):
     account = {}
+    user = {}
 
     acc_num = generate_account_number()
     username = generate_username()
@@ -36,8 +79,28 @@ def create_account(account_type, name, email):
     account["username"] = username
     account["password"] = password
     account["number"] = acc_num
+    
+    user["username"] = username
+    user["password"] = password
+    user["type"] = 'customer'
 
-    insert_account_into_database(account)
+    insert_user_account_into_database(user)
+    insert_bank_account_into_database(account)
+    return account, user
+
+
+def create_teller_account(name, email):
+    user = {}
+
+    username = generate_username()
+    password = generate_password()
+
+    user["username"] = username
+    user["password"] = password
+    user["type"] = 'teller'
+
+    insert_user_account_into_database(user)
+    return user
 
 
 def generate_account_number():
@@ -73,6 +136,18 @@ def generate_password():
 def get_account_summary_by_username(username):
     summary = {}
     account = get_account_details_by_username(username)
+    if not account:
+        raise Exception("Account details not available!")
+
+    summary["account_number"] = account["number"]
+    summary["account_type"] = account["type"]
+    summary["account_balance"] = account["balance"]
+    summary["account_holder_name"] = account["holder_name"]
+    return summary
+
+def get_account_summary_by_account_number(account_number):
+    summary = {}
+    account = get_account_details_by_account_number(account_number)
     if not account:
         raise Exception("Account details not available!")
 
