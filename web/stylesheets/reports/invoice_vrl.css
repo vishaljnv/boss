@@ -1,0 +1,370 @@
+
+
+
+.maincontent { border: 0 solid green;color: #333333; margin: 10px 10px 10px 140px; margin-bottom: 100px;width: auto;}
+
+.invoice { border: 1px solid #ccc; background: #f7f7f7; -moz-box-shadow: 1px 1px 3px #ddd; -webkit-box-shadow: 1px 1px 3px #ddd; box-shadow: 1px 1px 3px #ddd; }
+.invoice .title { font-size: 18px; float: right; }
+
+.clear {
+	height: 0px;
+}
+
+.smalltf {
+	width: 118px;
+	height: 28px;
+}
+
+.jGrowl-message {
+	color: white;
+}
+
+/** to override the z-index value of the div.overlay(select past or future logdates)**/
+.invoice .ui-datepicker{ 
+	z-index: 9999 !important;
+}
+
+.invoice .div-table{
+  display:table;         
+  width:100%;         
+  border-spacing:5px;/*cellspacing:poor IE support for  this*/
+}
+.invoice .div-table-row{
+  display:table-row;
+  width:auto;
+  clear:both;
+}
+.invoice .div-table-col{
+  float:left;/*fix for  buggy browsers*/
+  display:table-column;         
+}
+
+.invoice {
+	padding: 0 0 10px  0 !important;
+}
+.invoice .invoice_btns{
+	position: relative;
+	float: right;
+}
+.invoice .invoice_btns button{
+	background: #eee !important;
+	color: #222;
+	text-shadow: none;
+	border: 1px solid #999;
+	margin: 0 5px 0 5px;
+}
+.invoice .invoice_header{
+	width: 100%;
+	float: left;
+	/*border: 1px solid #ccc;*/
+	background: #e7e7e7;
+	margin: 10px;
+	margin-top: -1%;
+}
+.invoice .invoice_channel_name{
+	width: 100%;
+	float: left;
+	padding-top: 10px;
+}
+.invoice .invoice_channel_name h1{
+	text-align: center;
+	font-size: 3.5em;
+	color: #444;
+	/*text-align: right;*/
+}
+.invoice_channel_name .address{
+	color: #555;
+	text-align: center;
+	font-size: 14px;
+	/*text-align: right;*/
+}
+.invoice_channel_logo{
+	/*width: 22%;*/
+	float: right;
+}
+.invoice_channel_logo img{
+	/*width: 100%;*/
+	height: 100px;
+}
+.invoice_details_table{
+	width: 100%;
+	/*border: 1px solid .ccc;*/
+}
+.invoice_details_table td label{
+	/*width: 100px;	*/
+	text-align: left;
+	margin-left: 30px;
+}
+.invoice_total_table{
+	margin-bottom: 10px;
+}
+.invoice_note_div p {
+	padding: 0;
+	margin: 0 !important;
+	/*font-size: 10px;*/
+}
+#invoice_footer {
+	border: 0;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px;
+	border: 0 !important;
+	font-size: 12px;
+}
+
+.invoice_details_table {
+	 border: 1px solid #ccc !important;
+	 width: 100%;
+}
+
+.invoice_details_table td, .invoice_details_table th {
+	border: 0px solid #ccc;
+	border-width: 0 1px 1px 0;
+	padding: 2px 3px !important;
+}
+
+.invoice_details_table td{
+	font-weight: normal !important;
+	color: #111 !important;
+}
+
+.invoice_details_table th{
+	font-weight: bold !important;
+	color: #111 !important;
+}
+
+td.border_left_0{
+	border-left: 0 !important;
+}
+td.border_right_0{
+	border-right: 0 !important;
+	text-align: center;
+}
+
+td.border_bottom_0, tr.border_bottom_0{
+	border-left: 0 !important;
+}
+td.border_top_0, tr.border_top_0{
+	border-right: 0 !important;
+}
+.td_label{
+	margin-left: 20px;
+	margin-right: 10px;
+	font-weight: bold;
+}
+.border_top_transparent {
+	border-top-color: transparent;
+}
+.border_bottom_transparent {
+	border-bottom-color: transparent;
+}
+.border_left_transparent {
+	border-left-color: transparent;
+}
+.border_right_transparent {
+	border-right-color: transparent;
+}
+
+.invoice_total_table td.price_td{
+	text-align: right !important;
+	margin-right: 10px !important;
+}
+
+.invoice_details_table td.width_100{
+	min-width: 100px !important;
+	max-width: 100px !important;
+}
+
+.input_val_span{
+	cursor: pointer;
+	text-decoration: underline;	
+	color: #337EEE;
+}
+
+.input_edit{
+	width: 50px;
+	height: 20px;
+	display: none;
+	padding: 1px 0 !important;
+}
+
+.invoice_details_table .col-label{
+	font-weight: bold !important;
+	text-transform: uppercase;
+	color: #111 !important;
+}
+
+
+.invoice_details_table .col-val{
+	font-weight: normal !important;
+}
+
+.invoice_content .certificate-header{
+	background-color: #e7e7e7 !important;
+	font-family: 'Arial';
+	color: #111 !important;
+	width: 100%;
+	height: 120px;
+}
+
+.invoice_content .certificate-header .company-info{
+	vertical-align: middle;
+	text-align: center;
+	text-transform: uppercase;
+	width: 70%;
+}
+
+.invoice_content .certificate-header .company-info h1{
+	color: #111 !important;
+	font-size: 60px !important;
+	margin-bottom: 20px;
+	margin-top: 10px;
+}
+
+.invoice_content .certificate-header .company-info .address{
+	font-size: 14px !important;
+}
+
+.invoice_content .certificate-header .logo{
+	text-align: right;
+	width: 30%
+}
+
+.invoice_content .certificate-header .logo img{
+	height: 120px;
+}
+
+span{
+	font-weight: normal;
+}
+
+
+p{
+	line-height: 12px !important;
+	font-weight: normal !important;
+}
+
+
+.invoice_regd_text, .invoice_thank_you_text{
+	padding: 5px;
+	border: 1px solid #ccc;
+	color: #000;
+	margin-top: 10px;
+	line-height: 13px;
+}
+.invoice_btns div.address_checkbox_wrapper{
+	float: right;
+}
+
+.invoice_btns div.address_checkbox_wrapper div{
+	display: inline-block;
+	max-width: 200px;
+	float: left;
+}
+
+.invoice_btns div.address_checkbox_wrapper div input{
+	float: left;
+    position: relative;
+    margin-right: 5px;
+    margin-left: 20px;
+}
+
+.e_oe_text{
+	font-size: 10px;
+}
+
+.invoice_cg_view_tbl{
+	margin-top: 20px;
+	text-align: center;
+}
+
+.invoice_cg_view_tbl .table_header{
+	background: #d0d6de;
+	color: #5578a0;
+	font-size:14px;
+	padding: 2px 0;
+}
+.invoice_cg_summary_tbl{
+	text-align: center;
+}
+
+@media print {
+	@page {
+	  margin: 1.5cm 1cm;
+	}
+
+	.e_oe_text{
+		font-size: 10px;
+	}
+
+	.invoice_btns, .print_btn, .spotTypeScreen, .telecast_rate_col, .button-section, .tele_invoice_id, 
+	.duration_rate_col, .refresh_telecast, .tele_remarks_div, .update_telecast_btn, .slot_rate_remarks_div, .tele_orderInfo, .invoice_cg_view_tbl{
+		display: none !important;
+	}
+	.reference_num_span{
+		color: #333;
+	}
+	.inv_footer_text{
+		font-size: 8px;
+	}
+	.tele_remarks_span{
+		position: relative;
+		top: -15px;
+	}
+
+	.invoice-certificate{
+		font-family: 'Arial';
+		font-size: 9pt !important;
+	}
+
+	.invoice_content .certificate-header .company-info h1{
+		font-size: 28pt !important;
+		margin-bottom: 0;
+	}
+
+	.invoice_content .certificate-header .company-info .address{
+		margin-top: -1pt;
+		font-size: 10pt;
+	}
+
+	.invoice-certificate span,
+	.invoice-certificate p,
+	.invoice-certificate strong,
+	.invoice-certificate h4{
+		font-size: 8pt !important;
+	}	
+
+	.invoice_content table td,
+	.invoice_content table th,
+	.invoice_content table .col-val,
+	.invoice_content table .col-label
+	{
+		font-size: 8pt !important;
+		padding: 1px 3px !important;
+	}
+
+	.invoice_cg_view_tbl{
+		margin-top: 20px;
+		text-align: center;
+	}
+
+	.pre {
+	    display: block;
+	    font-family: Lucida Grande,Lucida Sans,Arial,sans-serif;
+	    margin: 1em 0px 1em;
+	    white-space: -moz-pre-wrap; /* Firefox */
+		white-space: -pre-wrap; /* ancient Opera */
+		white-space: -o-pre-wrap; /* newer Opera */
+		white-space: pre-wrap; /* Chrome; W3C standard */
+		word-wrap: break-word; /* IE */
+	}
+
+	
+
+}
+
+	
+
+

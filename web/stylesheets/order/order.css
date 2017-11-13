@@ -1,0 +1,214 @@
+	.spots_view table, .spots_view th, .spots_view td {
+	    border: 1px solid  #bbb;
+	    border-collapse: collapse;
+	}
+	.spots_view th {
+	    font-size:12px;
+	    font-weight:normal; 
+      width:8px;
+      color: #000;
+	}
+	.spots_view td{
+	  padding: 0px;
+    text-align: center;
+    word-wrap: break-word
+	}
+	
+.weekend{
+	background-color:#bfbfbf;
+}
+
+
+.order_form label {
+	float:none;
+    margin-right: 20px;
+    padding-top: 5px;
+    text-align: right;
+    width: 150px;
+}
+
+.order_form button {
+    text-shadow: 1px 1px #395380;
+    text-transform: none;
+} 
+
+.formbtn{
+	padding: 3px;
+	-moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px;
+}
+
+.ui-tooltip, .arrow:after {
+    background: black;
+    border: 2px solid white;
+  }
+  .ui-tooltip {
+    padding: 10px 20px;
+    color: white;
+    border-radius: 20px;
+    font: bold 10px "Helvetica Neue", Sans-Serif;
+    box-shadow: 0 0 7px black;
+  }
+  
+  .transparent{
+  	border-color:transparent !important;
+  	border:none !important;
+  	box-shadow:none !important;
+  	background:transparent !important;
+  	input:read-only !important;
+  }
+  
+  .fieldset{
+  	border: 1px solid #ccc; padding: 5px; background: #f7f7f7;
+  }
+  
+  .legend{
+  	text-transform: uppercase;
+  }
+
+  .order_form_fields input{
+      height: 29px;
+      border-radius: 3px;
+      margin-right: 10px;
+      
+      font-size: 12px;
+      padding: 8px 5px;
+      border: 1px solid #ccc;
+      background: #fcfcfc;
+      outline: none;
+      font-family: DroidSansRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  }
+
+  .order_form_fields select{
+    font-size: 12px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    background: #fcfcfc;
+    outline: none;
+    box-shadow: inset 1px 1px 3px #ccc;
+    border-radius: 3px;
+    margin-right: 10px;
+    font-family: DroidSansRegular, "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    height: 29px;
+  }
+  
+  .month_tab{
+    background-color: #fff;
+    border:1px solid #CFCDCD;
+    padding:5px;
+    margin-right: 4px;
+    border-radius: 4px;
+  }
+  
+  .each_spot{
+    box-shadow: none !important;
+    padding:0px !important;
+    margin:0px !important;
+  }
+
+  .schedule_type_fieldset {
+    border: 1px solid #ccc;
+    width: 32%;
+  }
+
+  .schedule_type_fieldset label {
+    position: relative;
+    top: 2px;
+  }
+
+ .ui-tooltip, .arrow:after {
+    background: #cef1f6;
+    border: 1px solid #638bbd;
+  }
+  .ui-tooltip {
+    padding: 10px 20px;
+    color: #063e81;
+    border-radius: 20px;
+    font: bold 12px "Helvetica Neue", Sans-Serif;
+    text-transform: capitalize;
+    box-shadow: 0 0 7px black;
+  }
+  .arrow {
+    width: 70px;
+    height: 16px;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -35px;
+    bottom: -16px;
+  }
+  .arrow.top {
+    top: -16px;
+    bottom: auto;
+  }
+  .arrow.left {
+    left: 20%;
+  }
+  .arrow:after {
+    content: "";
+    position: absolute;
+    left: 20px;
+    top: -20px;
+    width: 25px;
+    height: 25px;
+    box-shadow: 6px 5px 9px -9px black;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .arrow.top:after {
+    bottom: -20px;
+    top: auto;
+  }
+
+  .Saturday, .Sunday{
+    background: #e4e4e4;
+  }
+  .Sunday {
+    border-right: 1px solid #cb5f35 !important;
+  }
+
+  #edit_tb{
+    background: #5D885D;
+    border: 1px solid green;
+  }
+  #delete_tb, #cancel {
+    background: #C76262;
+    border: 1px solid red;
+  }
+  #clone_tb {
+    background: #59797d;
+    border: 1px solid #2f838d;
+  }
+  
+  .months_tab .month_tab.active {
+    color: #fff;
+  }
+
+  #orderInfo {
+    margin: 0;
+    padding: 10px 50px 0 0;
+  }
+  .ro_view_clipname{
+    font-size: 10px;
+  }
+  #days_fieldset{
+    width:300px;
+    background:#e8e8e8;
+    border:1px solid #ccc;
+    position: relative;
+    top: -15px;
+  }
+  #days_fieldset input {
+    height: auto;
+  }
+
+  .ro_version_wrapper .label{
+    color: #666;
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  .ro_version_wrapper select {
+    color: #666;
+    width: 120px;
+  }

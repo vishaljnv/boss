@@ -1,0 +1,150 @@
+<link rel="stylesheet" media="screen" href="stylesheets/style.css" />
+<link rel="stylesheet" media="screen" href="stylesheets/font-awesome.min.css" />  
+
+<script type="text/javascript" src="javascripts/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="javascripts/jquery-migrate-1.2.1.js"></script>
+<script type="text/javascript" src="javascripts/jquery-ui.min.js"></script> 
+<script type="text/javascript" src="javascripts/general.js"></script>
+<script type="text/javascript" src="javascripts/jquery.cookie.js"></script>
+<script type="text/javascript" src="javascripts/plugins/jquery.alerts.js"></script>
+<script type="text/javascript" src="javascripts/index.js"></script>	
+<link href="stylesheets/buttons.dataTables.min.css" type="text/css" rel="stylesheet">
+<script src="javascripts/jquery.dataTables.min.js" language="javascript" type="text/javascript"></script>
+<script src="javascripts/dataTables.buttons.min.js" language="javascript" type="text/javascript"></script> 
+
+
+
+<div class="left">    
+    <form id="spot_type_form">
+    <div class="form_default">
+				<p>
+				    <p>
+                    	<label for="acc_no" style="color:white">Account Number<span class="mandatory">*</span></label>
+                        <input type="text" name="acc_no" maxlength="20" id="acc_no" class="sf" />
+                        <input type="hidden" name="id" id="id"  class="sf" />
+                        <input type="hidden" name="identity" id="identity"  class="sf" />
+                    </p>
+
+				    <p>
+						<label style="color:white">Account Holder Name</label> 
+						<input type="text" id="amount" class="mf" />
+					</p>
+					<p>
+						<label style="color:white">Amount</label> 
+						<input type="text" id="amount" class="mf" />
+					</p>
+					
+				</p>
+				<p>
+						<label></label>
+						<button type="button" id="savetransfer" onclick="savetransfer()" class="similar_add"><i class="fa fa-floppy-o" aria-hidden="true" style="display:inline;padding-right:2px;"></i> Deposit
+						</button>
+						<button type="reset" class="cancel similar_cancel" style="margin-left: 25px;"><i class="fa fa-times " aria-hidden="true" style="display:inline;padding-right:2px;"></i> Cancel
+						 </button>
+					</p>
+     </div>
+     </form>
+     </div>
+<script>
+
+
+    
+
+	$(document).ready(function(){
+
+
+      function savetransfer(){
+      
+			console.log("transfffffffffffffffffffffff")
+				var acc_no = $('#acc_no').val();
+
+				
+					value = {};
+					if(!acc_no){
+						jAlert("Empty Account Number");
+						return false;
+					} else {
+					    value["acc_no"] = acc_no
+					}
+					value["amount"]  = $('#amount').val();
+					$.ajax({
+						url : "/transfer",
+						type : 'POST',
+						dataType:"json",
+						data : JSON.stringify(value),
+						success : function(data) {
+						
+								$('#main').load("customer_account_summary.html");
+						},
+						error: function(xhr, status, text) {
+				               var response = $.parseJSON(xhr.responseText);
+			         	       var err = response.errors;
+				
+				          //  if (response) {
+				          if(err.toString()=='session_expired'){
+				        	window.location.href= "index.html";
+				        } 
+				        else{	
+				                jAlert(err.toString());
+				            }
+				        }
+					});
+				
+
+    }
+
+
+
+
+
+
+
+
+		
+		
+		$('#name').keypress(function(event) {
+		    if (event.keyCode == 13) {
+		        event.preventDefault();
+		    }
+		});
+		
+		 $(".cancel").click(function(){
+				$.ajax({url:"/settings/channel_list.html",
+					success:function(data){$('#main').html(data);},
+                    error: function(xhr, status, text) {
+				       var response = $.parseJSON(xhr.responseText);
+				       var err = response.errors;
+				
+				     //   if (response) {
+				    if(err.toString()=='session_expired'){
+				        	window.location.href= "index.html";
+				        } 
+				        else{ 	
+				            jAlert(err.toString());
+				        }
+				    }
+				});
+		 });
+
+		/*$('#cancelChannel').click(function(){
+			$('#saveChannel').css('display','inline');
+			$('#updateChannel').css('display','none');
+			$('#deleteChannel').css('display','none');
+			$('#cancelChannel').css('display','none');
+				$.ajax({url:"/settings/settings_menu.html",
+					success:function(data){$('#main').html(data);},
+                    error: function(xhr, status, text) {
+				       var response = $.parseJSON(xhr.responseText);
+				       var err = response.errors;
+				
+				    //    if (response) {
+				   if(err.toString()=='session_expired'){
+				        	window.location.href= "index.html";
+				        } 
+				        else{ 	
+				            jAlert(err.toString());
+				        }
+				    }
+				}); 
+			});*/
+ </script>

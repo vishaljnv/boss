@@ -1,0 +1,345 @@
+
+
+/* CSS Styles to be used by both Screen and Print */
+	.spotTypePrint{
+		display: none;
+	}
+
+	.spotTypeScreen{
+		display: inline;
+	}
+
+	.button-section{
+		text-align: right; 
+		padding: 5px;
+		position: relative;
+		top: 40px;
+	}
+
+	.print-section #print_btn{
+		width: 60px; 
+		height: 30px;
+	}
+
+	.hide-col{
+		visibility: none;
+	}
+
+	.disabled{
+		color: #999 !important;
+	}
+
+
+/* Telecast certificate styles */	
+	.telecast-certificate{
+		width: 100%;
+	}
+
+	.telecast-certificate .certificate-header{
+		width: 100%;
+		background-color: #e7e7e7 !important;
+		color: #111 !important;
+		height: 120px;
+	}
+
+
+	.telecast-certificate .certificate-header .company-info{
+		vertical-align: middle;
+		text-align: center;
+		width: 70%;
+		text-transform: uppercase;
+	}
+
+	.telecast-certificate .certificate-header .company-info h1{
+		font-size: 60px !important;
+		margin-bottom: 10px;
+		margin-top: 10px;
+	}
+
+	.telecast-certificate .certificate-header .company-info .address{
+		font-size: 14px !important;
+		margin-top: 25px;
+	}
+
+	.telecast-certificate .certificate-header .logo{
+		text-align: right;
+		width: 30%
+	}
+
+	.telecast-certificate .certificate-header .logo img{
+		height: 120px;
+	}
+
+	.clearfix::after {
+	    content: "";
+	    clear: both;
+	    display: table;
+	}
+
+	.telecast-certificate .certificate-content{
+		padding: 5px 5px;
+	}
+
+	.telecast-certificate .certificate-content .meta-data h1{
+		text-align: center;
+		margin: 10px 0;
+		text-transform: uppercase;
+	}
+	
+	.telecast-certificate .certificate-content .meta-data .columns{
+		width: 100%;
+		display: inline-block;
+	}
+
+	.telecast-certificate .certificate-content .meta-data .left-columns{
+		width: 50%;
+		float: left;
+	}
+
+	.telecast-certificate .certificate-content .meta-data .right-columns{
+		width: 50%;
+		float: right;
+	}
+
+	.telecast-certificate .certificate-content .meta-data .column{
+		margin: 2px 4px;
+		display: inline-block;
+		width: 100%;
+	}
+
+
+	.telecast-certificate .certificate-content .meta-data .col-label{
+		width: 30%;
+		float: left;
+		vertical-align: top;
+		text-transform: uppercase;
+		font-weight: 600;
+	}
+
+	.telecast-certificate .certificate-content .meta-data .col-value{
+		vertical-align: top;
+		float: left;
+		text-transform: uppercase;
+		width: 60%;
+	}
+
+	.telecast-certificate .certificate-content .meta-data .col-value.customer_address{
+		padding-right: 100px;
+		line-height: 18px;
+	}
+
+	.telecast-certificate .certificate-content .meta-data .col-colon{
+		vertical-align: top;
+		width: 10px;
+		float: left;
+	}
+
+	.telecast-certificate .certificate-content .meta-data .col-colon::after{
+		content: ':';
+		display: table;
+	}
+
+	.telecast-certificate .certificate-content .report-data table,
+	.telecast-certificate .certificate-content .duration-summary table{
+		width: 100%;
+		border: 1px solid #ccc;
+	}
+
+	.telecast-certificate .certificate-content .report-data table th,
+	.telecast-certificate .certificate-content .duration-summary table th{
+		text-transform: uppercase;
+		font-weight: 600;
+	}
+
+	.telecast-certificate .certificate-content .report-data table td,
+	.telecast-certificate .certificate-content .report-data table th,
+	.telecast-certificate .certificate-content .duration-summary table td, 
+	.telecast-certificate .certificate-content .duration-summary table th
+	{
+		text-align: center;
+		border: 0px solid #ccc;
+		border-width: 0 1px 1px 0;
+		padding: 1px 3px !important;
+	}
+
+	.telecast-certificate .certificate-content .report-data .col-value{
+		text-transform: uppercase;
+	}
+
+	.telecast-certificate .certificate-content .duration-summary h4{
+		text-align: center;
+	}
+
+	.telecast-certificate .certificate-content .telecast_rate_col{
+		color: #999 !important;
+	}
+	#telecast_amount_tbl{
+		width: 50%;
+		position: relative;
+		top: 30px;
+		float: right;
+		/*font-family:serif;*/
+	}
+	.tele_table_header{
+		background: #d0d6de;
+		color: #5578a0;
+		font-size:14px;
+		padding: 2px 0;
+	}
+	.tele_amt_label{
+		text-align: left !important;
+		padding-right: 30px !important;
+		width: 70%;
+	}
+	.tele_amt{
+		text-align: right !important;
+		width: 30%;
+	}
+	#tele_invoice_id{
+		margin-right: 20px;
+		font-size: 14px;
+		font-style: italic;
+		color: green;
+		display: none;
+	}
+	#slot_rate_remarks_div, #cg_rate_remarks_div{
+		display: none;
+    	padding: 10px 5px 5px 30px
+	}
+	.remarksIcon{
+		display: none;
+	}
+	#reference_num_span{
+		color: blue;
+	}
+	#reference_num_span:hover{
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	.tele_remarks_label {
+		position:relative;
+		top:-15px;
+		right:10px;
+	}
+
+	.telecast-certificate div.address_checkbox_wrapper{
+		float: right;
+	}
+
+	.telecast-certificate div.address_checkbox_wrapper div{
+		display: inline-block;
+		max-width: 200px;
+		float: left;
+	}
+
+	.telecast-certificate div.address_checkbox_wrapper div input{
+		float: left;
+	    position: relative;
+	    margin-right: 5px;
+	    margin-left: 20px;
+	}
+
+	.telecast-certificate .cg_count_span{
+		color: blue;
+		text-decoration: underline;
+	}
+
+	.channel-logo{
+		width: 291px;
+	}
+
+
+@media print {
+
+	@page {
+	  margin: 1.5cm 1cm !important;
+	}
+	#reference_num_span{
+		color: #333;
+	}
+
+	.telecast-certificate .cg_count_span{
+		color: #555;
+		text-decoration: none;
+	}
+
+	.tele_orderInfo{
+		display: none !important;
+	}
+
+	.tele_remarks_label {
+		position: relative;
+		top: 15px;
+		right: 10px;
+		left: 10px;
+	}
+	.tele_remarks_span{
+		position: relative;
+		top: 5px;
+		left: 30px;
+	}
+
+  	.telecast-certificate{
+  		font-family: 'Arial';
+  		font-size: 6pt !important;
+  	}
+
+	.spotTypePrint{
+		text-transform: uppercase;
+		display: block !important;
+	}
+
+	.disabled,
+	.spotTypeScreen, 
+	.button-section, 
+	.print_btn, 
+	.duration_rate_col, 
+	#refresh_telecast, 
+	#update_telecast_btn, 
+	.slot_rate_remarks_div, 
+	.tele_remarks_div, 
+	.remarksIcon, 
+	.info_invoice_num, 
+	.tele_invoice_id, 
+	.telecast_total_div,
+	.invoice_date_picker{
+		display: none !important;
+	}
+
+	/* .duration-summary {page-break-before: always;} */
+
+	.telecast-certificate .certificate-content .report-data .timeband{
+		display: none;
+		width: 0;
+	}
+
+	.telecast-certificate .certificate-content .report-data .clip-caption{
+		width: 53%;
+	}
+
+	.telecast-certificate .certificate-header .company-info h1{
+		font-size: 28pt !important;
+		margin-bottom: 0;
+	}
+
+	.telecast-certificate .certificate-header .company-info .address{
+		margin-top: -1pt;
+		font-size: 10pt !important;
+	}
+
+	.telecast-certificate .certificate-content .meta-data .col-label,
+	.telecast-certificate .certificate-content .meta-data .col-value{
+		font-size: 8pt !important;
+	}
+
+	.telecast-certificate .certificate-content .report-data table td,
+	.telecast-certificate .certificate-content .report-data table th,
+	.telecast-certificate .certificate-content .duration-summary table td, 
+	.telecast-certificate .certificate-content .duration-summary table th
+	{
+		font-size: 8pt !important;
+		padding: 1pt 3pt !important;
+	}
+
+	thead {display: table-header-group;}
+}

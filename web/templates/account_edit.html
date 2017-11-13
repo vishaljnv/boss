@@ -1,0 +1,175 @@
+<link rel="stylesheet" media="screen" href="stylesheets/style.css" />
+<link rel="stylesheet" media="screen" href="stylesheets/font-awesome.min.css" />  
+
+<script type="text/javascript" src="javascripts/jquery-1.11.1.js"></script>
+<script type="text/javascript" src="javascripts/jquery-migrate-1.2.1.js"></script>
+<script type="text/javascript" src="javascripts/jquery-ui.min.js"></script> 
+<script type="text/javascript" src="javascripts/general.js"></script>
+<script type="text/javascript" src="javascripts/jquery.cookie.js"></script>
+<script type="text/javascript" src="javascripts/plugins/jquery.alerts.js"></script>
+<script type="text/javascript" src="javascripts/index.js"></script>	
+<link href="stylesheets/buttons.dataTables.min.css" type="text/css" rel="stylesheet">
+<script src="javascripts/jquery.dataTables.min.js" language="javascript" type="text/javascript"></script>
+<script src="javascripts/dataTables.buttons.min.js" language="javascript" type="text/javascript"></script> 
+
+
+
+<div class="left">    
+    <form id="spot_type_form">
+    <div class="form_default" style="color:white;font-size:">
+				  <p>
+                    	<label for="acc_no">Account Number<span class="mandatory">*</span></label>
+                        <input type="text" name="acc_no" maxlength="20" id="acc_no" class="sf" />
+                        <input type="hidden" name="id" id="id"  class="sf" />
+                        <input type="hidden" name="identity" id="identity"  class="sf" />
+                    </p>
+
+                    <p>
+						<label>Account Holder Name</label> 
+						<input type="text" id="acc_name" class="mf" />
+					</p>
+
+					<p>
+						<label>Telephone </label> 
+						<input  id="acc_tel" class="mf" />
+					</p>
+
+					<p>
+						<label>Account Type<span class="mandatory">*</span> </label> 
+						<input type="text" id="acc_type" class="mf" />
+					</p>
+
+					<p>
+						<label>Address</label> 
+						<input type="text" id="acc_address" class="mf" />
+					</p>
+
+					<p>
+						<label>ID</label> 
+						<input type="text" id="acc_id" class="mf" />
+					</p>
+					<p>
+						<label>Nominee</label> 
+						<input type="text" id="acc_nominee" class="mf" />
+					</p>
+					<p>
+						<label>DOB</label> 
+						<input type="text" id="acc_dob" class="mf" />
+					</p>
+					 <p>
+						<label></label>
+						<button type="button" id="updateaccount" onclick="update_account()"><i class="fa fa-floppy-o"  style="display:inline;padding-right:2px;"></i> Update
+						</button>
+						<button type="reset" class="cancel" style="margin-left: 25px;"><i class="fa fa-times fa-lg" aria-hidden="true" style="display:inline;padding-right:2px;"></i> Cancel
+						 </button>
+					</p> 
+					
+     </div>
+     </form>
+     </div>
+<script>
+
+
+ function update_account(){
+      console.log("1111111111111111111")
+		var id = $('#id').val();
+		value = {};
+		acc_no = $("#acc_no").val();
+        if(acc_no!="")
+            value["acc_no"] = acc_no;
+        acc_name = $("#acc_name").val();
+        if(acc_name!="")
+            value["acc_name"] = acc_name;
+        acc_tel = $("#acc_tel").val();
+        if(acc_tel!="")
+            value["acc_tel"] = acc_tel;
+        acc_type = $("#acc_type").val();
+        if(acc_type!="")
+            value["acc_type"] = acc_type;
+        acc_address = $("#acc_address").val();
+        if(acc_address!="")
+            value["acc_address"] = acc_address;
+        acc_id = $("#acc_id").val();
+        if(acc_id!="")
+            value["acc_id"] = acc_id;
+        acc_nominee = $("#acc_nominee").val();
+        if(acc_nominee!="")
+            value["acc_nominee"] = acc_nominee;
+        acc_dob = $("#acc_dob").val();
+        if(acc_dob!="")
+            value["acc_dob"] = acc_dob;
+		console.log("VAAAAAAA"+JSON.stringify(value))
+		console.log("idddddd"+acc_no)
+			if(acc_no!=""){
+		
+				
+				$.ajax({
+					url : "/account/"+acc_no,
+					type : 'PUT',
+					dataType:"json",
+					data : JSON.stringify(value),
+					success : function(data) {
+						window.location.href= "admin_accounts_display.html";
+					},
+					error: function(xhr, status, text) {
+				               var response = $.parseJSON(xhr.responseText);
+			         	       var err = response.errors;
+				
+				        
+				          if(err.toString()=='session_expired'){
+				        	window.location.href= "index.html";
+				        } 
+				        }
+						
+				});
+			}
+		
+		}
+
+      
+        $(document).ready(function() {
+        	console.log("docyment .readdddddddddddddddd")
+        	var cust_id = sessionStorage.getItem("cust_id");
+        	cust_id = 
+		$.ajax({
+			url : "customer_details/"+cust_id,
+			type : 'GET',
+			dataType : "json",
+			success: function(json) {
+				console.log("JSONNNNN"+JSON.stringify(json))
+				// Like this u send what all u want from backed and fill these div's
+                         obj = json['customer_info'] 
+                         if (obj.name!= undefined){
+                         	$("#acc_name").val(obj.name);
+                         }
+                         $("#acc_no").val(333333)
+                         $("#acc_tel").val(44440);
+                         $("#acc_type").val("savings");
+                         $("#acc_address").val("ddddddddddd");
+                         $("#acc_id").val(444444444);
+                         $("#acc_nominee").val("vishhhhhhhh");
+                         $("#acc_dob").val("34/30/3950");
+			},
+			error: function(xhr, status, text) {
+				       var response = $.parseJSON(xhr.responseText);
+				       var err = response.errors;
+				
+				     //   if (response) {
+				    if(err.toString()=='session_expired'){
+				        	window.location.href= "index.html";
+				        } 
+				        else{ 	
+				            jAlert(err.toString());
+				        }
+			}
+		});
+	});
+			
+
+    	
+		 $(".cancel").click(function(){
+		 	    console.log("11111111111111111111")
+                 window.location.href= "admin_accounts_display.html";
+		 	   
+		 });
+ </script>

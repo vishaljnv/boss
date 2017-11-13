@@ -1,0 +1,112 @@
+.maincontent .left {
+	overflow: hidden;
+}
+
+.myFieldSet
+	{
+		float:left;
+		margin-left: 0%;
+	}
+
+.margin_bottom{
+    	margin-bottom: 5px;
+}
+
+.container{
+		display:table;
+		width:90%;
+		border-collapse: collapse;
+	}
+	
+input[type=radio], input[type=checkbox] 
+{ margin-left:0px; padding: 0; vertical-align: middle; margin-top: 0px;}
+
+.clip_name{
+  border:0px solid red;	
+  width:620px;
+  float:left;
+  padding-left:3px;
+  font-size:12px;
+  font-weight: bold;
+}
+
+#commercials_table .del{
+  color: #A29DA1;
+  float: right;
+}
+
+#commercials_table .del:hover{
+  color: #CD1E1E;
+  cursor: pointer;
+}
+
+.vertical_option{
+  border:0px solid blue;
+  width:150px;
+  float:left;
+  padding-top:2px;
+  padding-bottom: 2px;
+}
+
+.sub_vertical_option{
+  border:0px solid green;	
+  width:300px;
+  float:left;
+  padding-top:2px;
+  padding-bottom: 2px;
+}
+
+.each_com{
+ background-color: #A8CBE3;
+ border:1px solid #4096D1;
+ /*background-color: #8080B4;
+ border: 1px solid #2F2F7A;*/
+ display: inline-block;
+ width:100%;
+ margin-bottom:2px;
+ padding: 2px;
+}
+
+#commercials_table .select_cls{
+  padding: 2px !important;
+  border:1px solid #828485;
+  background: #eee;
+  color: #666;
+  max-width: 150px;
+}
+
+#commercials_table .inp_cls{
+    padding: 3px !important;
+    border:1px solid #828485;
+    background: #eee;
+    color: #666;
+}
+
+#commercials_table .del_clip{
+  padding: 3px;
+  color:#848E97;
+  float:right;
+}
+.font_bold{
+	font-weight:bold;
+	font-size:10px;
+}
+
+#commercials_table .font_bold {
+  font-size: 12px;
+}
+
+.add_commercial_btn{
+	background-color:#808080;
+	float:right;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-radius: 2px;
+	font-weight: bold;
+	border: 1px solid #595959;
+	color:#fff;
+	padding-left:5px;
+	padding-right: 5px
+}
+
+

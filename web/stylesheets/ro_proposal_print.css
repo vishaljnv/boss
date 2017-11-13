@@ -1,0 +1,165 @@
+@media print {
+	.header, .hide { visibility: hidden }
+	
+    .DataTables_sort_wrapper {
+		font-weight: bold;
+	}
+	 
+	.sidebar{
+		display:none;
+	}
+	
+	.accountinfo{
+		display:none;
+	}
+	
+	#ui-datepicker-div{
+		display:none;
+	}
+
+	.iconlink2{
+		display:none;
+	}
+	
+	.ui-datepicker-trigger{
+		display:none;
+	}
+	
+	.DTTT_container{
+		display:none;
+	}
+		#clock{
+		display:none;
+	}
+	
+	.footerinner{
+		display:none;
+	}
+	
+	#qtip-5-content{
+		display:none;
+	}
+	#pre_sales_add{
+		display: none;
+	}
+	#pg_title{
+		border:1px solid black;
+		color:black;
+		font-weight: bold;
+		border-right: transparent;
+	}
+    #spot_details_table{
+	   border-collapse: collapse;
+	   border: 2px solid black;
+   }
+    #spot_details_table tr th{
+	   border-collapse: collapse;
+	   font-weight: bold;
+	   font-size: 20px;
+	   border: 1px solid black !important;
+	   text-align: left;
+   }
+   #spot_details_table tr td{
+	   border-collapse: collapse;
+	   border: 1px solid black !important;
+	   font-size: 20px;
+   }
+	#channel_address{
+		border:0px solid !important;
+	}
+	#presale_print_view{
+		display: none;
+	}
+	#presales_list{
+		display: none;
+	}
+	.pgTitle{
+		display: none;
+	}
+	.ui-dialog-title{
+		display: none;
+	}
+
+	.dataTables_info{
+    	display: none;
+    }
+    .dataTables_length{
+    	display: none;
+    }
+    .dataTables_filter{
+    	display: none;
+    }
+	
+	.dataTables_paginate{
+		display: none;
+	}
+	.ui-button{
+		display: none;
+	}
+	#ro_proposal_details{
+		display: none;
+	}
+	#channel_address table tr td{
+		  border: none !important; zoom: 1 
+	}
+
+	.report_content{
+		 font-family: "Times New Roman", Georgia, Serif !important;
+	     font-size: 25px !important;
+	}
+    .field_title{
+        font-family: "Times New Roman", Georgia, Serif !important;
+	    font-size: 25px !important;
+	    font-weight: bold !important;
+    }
+   
+   .font_bold{
+         font-family: "Times New Roman", Georgia, Serif !important;
+	    font-size: 18px !important;
+	    font-weight: bold !important;
+   }
+
+   #channel_address{
+   	  display:block !important;
+   }
+
+   #channel_address tr, #channel_address td, #channel_address th{
+   		   	  border: none !important;
+   }
+   
+   #verital_line{
+   	  display:block !important;
+   }
+   #to_customer_addr{
+   	display:block !important;
+   }
+
+   #to_customer_addr_table, #to_customer_addr_table tr,#to_customer_addr_table td,#to_customer_addr_table th {
+   	  border: none !important;
+   }
+
+   #presale_report_content{
+   	display:block !important;
+   }
+   #pre_sales_notes{
+   	display:inline-block !important;
+   }
+   #pre_sales_policies{
+   	display: block !important;
+   }
+   #presales_declaration{
+   	display: block !important;
+   }
+   #customer_tax_details{
+   	display:block !important;
+   }
+
+   #presales_signatures{
+   	display:inline-block !important;  
+   }
+
+   #end_of_proposal_div{
+   	display:block !important;
+   }
+
+}

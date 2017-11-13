@@ -1,0 +1,518 @@
+@page {
+  margin: 1cm 0.5cm;
+}
+
+@media print {
+
+	html, body {
+		width: 100%;
+		height: 100%;
+	}
+
+	/*table {
+		width: 100%;
+		min-width: 1000px;
+		border-collapse: collapse !important;
+		font-family: "Times New Roman", Times, serif;
+		font-size: 18px;
+		color:#333;
+		position: relative;
+		-webkit-print-color-adjust: exact; 
+		text-transform: capitalize;
+	}
+
+	tr, td, th {
+		border: 1px solid #ccc !important;
+		-webkit-print-color-adjust: exact; 
+		padding: 4px 8px;
+		overflow: auto;
+		text-align: left;
+	}*/
+
+
+	.table_header_print table {
+		width: 100%;
+		min-width: 1000px;
+		border-collapse: collapse !important;
+		font-family: "Times New Roman", Times, serif;
+		font-size: 18px;
+		color:#333;
+		position: relative;
+		-webkit-print-color-adjust: exact; 
+		text-transform: capitalize;
+	}
+
+	.table_header_print tr, .table_header_print td, .table_header_print th {
+		border: 1px solid #ccc !important;
+		-webkit-print-color-adjust: exact; 
+		padding: 4px 8px;
+		overflow: auto;
+	}
+
+		 
+	.header, .hide { visibility: hidden }
+	
+    .DataTables_sort_wrapper {
+		font-weight: bold;
+	}
+	 
+
+	
+	.sidebar{
+		display:none;
+	}
+	
+	.accountinfo{
+		display:none;
+	}
+	
+	#ui-datepicker-div{
+		display:none;
+	}
+
+	.iconlink2{
+		display:none;
+	}
+	
+	.ui-datepicker-trigger{
+		display:none;
+	}
+	
+	.DTTT_container{
+		display:none;
+	}
+	
+	 input{
+    	 border: none !important; zoom: 1;
+    	 width: 60px;
+    	font-family: "Times New Roman", Times, serif;
+		font-size: 12px;
+	}
+	
+	#clock{
+		display:none;
+	}
+	
+	.footerinner{
+		display:none;
+	}
+	
+	#qtip-5-content{
+		display:none;
+	}
+	
+	#filterAffidavitResult{
+		display:none;
+	}
+	
+	#filterInvoiceResult{
+		display:none;
+	}
+	
+	#filterReconsResult{
+		display:none;
+	}
+	
+	#getAsRunLogs{
+		display:none;
+	}
+	.etabs{
+		display:none;
+	}
+	
+	#report_list_length{
+		display:none;
+	}
+	
+	#filterResult{
+		display:none;
+	}
+	
+	#report_list_filter{
+		display:none;
+	}
+	
+	#report_list_info{
+		display:none;
+	}
+	
+	#report_list_paginate{
+		display:none;
+	}
+	
+	.arrow{
+		display:none;
+	}
+	
+	#chart{
+		display:none;
+	}
+	#filterDiv{
+		display:none;	
+	}
+	#order_item_list{
+		display: none;
+	}
+	#order_list_form_default{
+		display: none;
+	}
+	#page_title_order{
+		display: none;
+	}
+    
+    .dataTables_info{
+    	display: none;
+    }
+    .dataTables_length{
+    	display: none;
+    }
+    .dataTables_filter{
+    	display: none;
+    }
+	
+	.dataTables_paginate{
+		display: none;
+	}
+	.ui-dialog-title{
+		display: none;
+	}
+	.ui-button{
+		display: none;
+	}
+	#print_view{
+		display: none;
+	}
+	#print_title{
+		color:gray;
+	}
+	#ord_details_print{
+		border:0px solid black;
+		margin-bottom: 10px;
+		background-color:#F8F9F9
+	}
+	#print_title{
+		border-left:1px solid black;
+		border-top:1px solid black;
+		border-bottom: 1px solid black;
+		
+	}
+	#spots_view td{
+	padding: 2px;
+    text-align: center;
+    word-wrap: break-word
+    font-family: "Times New Roman", Times, serif;
+	font-size: 12px;
+	font-weight: bold;
+	}
+	#title-id{
+		display: none;
+	}
+    .print_title{
+    	font-size:35px !important;
+    }
+    .print_table .print_date{
+    	font-size:25px !important;
+    }
+    #print_btn{
+	  display: none;
+   }
+   #export_btn{
+	  display: none;
+   }
+   #fpc_header{
+   	display: block;
+   }
+   #fpcFrmDate{
+   	display: none;
+   }
+   #fpc_title{
+   	display: none;
+   }
+   #deal_details_table tr, #deal_details_table td, #deal_header_tbl tr, #deal_header_tbl td {
+   	border: 0 !important;
+   }
+   #deal_header{
+   	top: -20px !important;
+   	font-size: 34px;
+   	color: #222;
+   }
+   #ro_details_table{
+   	width: 600px;
+   }
+   .invoice_tbl_title {
+   	text-align: center;
+   	font-weight: bold;
+   	color:#222;
+   	font-size:16px;
+   }
+   .invoice_note_div{
+   /*	font-size: 12px;*/
+     font-weight: normal !important;
+   	text-transform: none !important;
+   }
+
+   	table.print_table {
+		/*background: #e7e7e7;
+		width: 100%;*/
+	}
+
+	.print_table tr, .print_table td, .print_table th {
+		/*border: 0 !important;*/
+	}
+
+	
+
+	#invoice_footer {
+		color: #999;
+		font-size: 10px;
+	}
+
+	
+	.invoice_channel_name h1{
+		text-align: center !important;
+		font-size: 48px;
+		color: #444;
+		margin-bottom: 5px;
+	}
+	.invoice_channel_name .address{
+		color: #555;
+		text-align: center !important;
+		font-size: 20px;
+		margin-top: 0px;
+	}
+	.invoice_content{
+		position: relative;
+	}
+	.invoice_content table td, .invoice_content table th{
+		/*font-size: 12px !important;*/
+		color: #555;
+		font-weight: bold;
+	}
+	.invoice_details_table td, .invoice_details_table th{
+		/*text-align: center !important;*/
+		padding-left: 10px;
+	}
+	.invoice_details_table td.invoice_clip_name{
+		/*font-size: 10pt !important;*/
+		font-weight: bold;
+		padding-left: 10px;
+	}
+	#ro_deal_container *{
+		color: #555;
+		font-size: 1.1em;
+	}
+	#ro_deal_container .deal_notes td, #ro_deal_container .deal_notes th, #ro_deal_container .deal_terms td, #ro_deal_container .deal_terms th{
+		text-transform: none !important;
+	}
+	#ro_deal_container .deal_terms td, #ro_deal_container .deal_terms th{
+		padding: 6px 0;
+	}
+	#client_sign{
+		font-size: 25px !important;
+	}
+	#ro_deal_container strong {
+		color: #444 !important;
+	}
+
+	.border_top_transparent {
+		border-top-color: transparent;
+	}
+	.border_bottom_transparent {
+		border-bottom-color: transparent;
+	}
+	.border_left_transparent {
+		border-left-color: transparent;
+	}
+	.border_right_transparent {
+		border-right-color: transparent;
+	}
+	
+	.invoice_details_table td.td_label, .invoice_details_table td.td_val{
+		text-align: left !important; 
+	}
+
+	.invoice_data_view_tbl td.spot_val_net_td{
+		text-align: right !important;
+	}
+
+	.invoice_details_table td.width_100{
+		min-width: 100px !important;
+		max-width: 100px !important;
+	}
+	#deal_entitl_tbl td{
+		text-align: center;
+		border-right: 1px solid #ccc;
+		border-bottom: 1px solid #ccc;
+	}
+	.invoice_total_table td.price_td, #deal_entitl_tbl td.price_td{
+		text-align: right !important;
+		margin-right: 30px !important;
+	}
+	#ro_deal_container {
+		position: relative;
+		margin: 0 5% 0 5%;
+		border: 1px solid #ddd;
+		/*margin-bottom: 15%;*/
+	}
+	#ro_deal_container *{
+		/*font-size: 1.2em !important;*/
+	}
+	#ro_deal_container td, #ro_deal_container th, #deal_entitl_tbl td, #deal_entitl_tbl th{
+		/*font-size: 1.2em !important;*/
+	}
+	.deal_terms{
+		color: #333;
+	}
+	.deal_quoted_text p, div#client_sign{
+		/*font-size: 25pt !important;*/
+		margin: 0px 0 ;
+		padding-top: 10px;
+	}
+	#deal_terms table{
+
+	}
+	p#terms_header{
+		/*font-size: 30pt !important;*/
+		margin: 0 !important;
+		color: #666 !important;
+	}
+	#deal_entitl_tbl, .total_center_tbl{
+		position: relative;
+		left: 5%;
+	}
+	.deal_notes{
+		position: relative;
+		width: 95%;
+		margin: 0 10% 0 5%;
+		/*font-size: 1.2em !important;*/
+	}
+	#ro_deal_container strong{
+		color: #666 !important;
+		/*font-size: 1em !important;*/
+	}
+
+	.invoice_data_tbl th.width_40, .affidavit_list th.width_40{
+		width: 40px;
+	}
+	.invoice_data_tbl th.width_60, .affidavit_list th.width_60{
+		width: 60px;
+	}
+	.invoice_data_tbl th.width_80, .affidavit_list th.width_80{
+		width: 80px;
+	}
+	.invoice_data_tbl th.width_300, .affidavit_list th.width_300, .invoice_data_tbl td.invoice_clip_name {
+		width: 250px !important;
+	}
+	.affidavit_list th.width_30, .affidavit_list td.width_30{
+		width: 20px;
+	}
+	.affidavit_list th.width_50, .affidavit_list td.width_50{
+		width: 30px;
+	}
+
+	table.affidavit_list td {
+		text-transform: none !important;
+	}
+
+	/*table.affidavit_list td:nth-child(1){
+		width: 20px !important;
+		max-width: 20px !important;
+	}*/
+	.invoice_data_view_tbl td.spot_val_net_td input{
+		display: none !important;
+	}
+	.invoice_data_view_tbl td.spot_val_net_td{
+		text-align: right !important;
+	}
+
+	.invoice_channel_logo img{
+		height: 120px;
+	}
+	#gen_invoice_div{
+		display: none;
+	}
+	#telecast_tbl_title{
+		text-align: center;
+		color: #555;
+	}
+
+	.invoice_thank_you_text, .invoice_regd_text {
+		font-weight: normal !important;
+		color: #555;
+	}
+
+	/* BULK RO Print CSS */
+
+	#bulk_ro_form_wrapper input {
+		color: #666;
+	}
+	#bro_header_tbl{
+		width: 100%;
+		border: 1px solid #ccc;
+		border-collapse: collapse;
+		margin-bottom: 5px;
+	}
+	#bro_header_tbl td{
+		vertical-align: top !important;
+	}
+	#bro_header_tbl td{
+		text-align: center;
+		background: #d8d8d8;
+	}
+	#bro_header_tbl td img{
+		float: right;
+	}
+	#bro_header_tbl td.channel_address {
+		width:74%;
+		/*padding-left:20%;*/
+		padding-left:32%;
+		/*border-right: 1px solid #ddd;*/
+	}
+	#bro_channel_name {
+		font-weight: bold;
+		color: #666;
+		font-size: 22px;
+	}
+	#bulk_ro_form_wrapper .action_col{
+		display: none;
+	}
+	#bulk_ro_form_wrapper *{
+		text-transform: uppercase;
+	}
+	#bulk_ro_form_wrapper input, #bulk_ro_form_wrapper select{
+		background: #fff;
+	}
+	#bro_customer_filter, #bro_agency_filter, #bro_date{
+		width: 400px;
+		font-size: 14px;
+		padding: 0;
+		color: #000;
+	}
+
+	.bro_input_tbl td, .bro_input_tbl th{
+		/*text-align: center !important;*/
+	}
+	.bro_input_tbl{
+		position: relative;
+		margin-top: 3%;
+		
+	}
+	.bro_print_tbl_header{
+		background: #d0d6de;
+		color: #5578a0;
+		text-align: center;
+		position: relative;
+		padding: 5px !important;
+		margin-top: 2%;
+	}
+
+	input[type='number'] {
+	    -moz-appearance:textfield;
+	}
+
+	input::-webkit-outer-spin-button,
+	input::-webkit-inner-spin-button {
+	    -webkit-appearance: none;
+	}
+
+}

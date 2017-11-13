@@ -1,0 +1,78 @@
+
+#main{
+  cursor: default;
+}
+#main ul.widgetlist { margin: 0; padding: 1em 0 1em 3em; }
+
+.tabmenu {
+	line-height: 6px;
+	overflow: hidden;
+	padding: 6px;
+	top: 0;
+}
+
+.tabmenu span {
+	color: #fff;
+	font-size: 12px;
+	font-weight: normal;
+}
+.leftmenu li a {
+	text-decoration: none;
+}
+.leftmenu li:hover{
+	background-color: #D8EAFF;
+}
+.top-right-nav{
+	position: absolute;
+	right: 25px;
+	top: 0px;
+}
+.top-user-menu *{
+	color: #fff !important;
+}
+#userInfo{
+	text-decoration: none;
+}
+#logout:hover{
+	color: #F94949 !important;
+}
+#badge_css{
+	top:14px;
+	position: relative;
+	left:-14px;
+	background: red;
+}
+ul#dropdown_cust li{
+	padding: 5px 7px;
+    border-bottom: 1px solid #ccc;
+
+}
+.notification_cust_name{
+	margin: 10px 10px;
+	color: #00cc00;
+}
+.notification_header h5{
+	margin-bottom:5px;
+}
+.notification_err_reason {
+	margin-left:8px;
+}
+.sub_menus{
+	margin-left: 34px;
+	padding: 5px 0 0 0;
+}
+.sub_menu_icons{
+	margin-right: 3px;
+}
+.helper-icons{
+	position: relative;
+	float: right;
+	margin-right: 12px;
+	margin-top: 6px;
+}
+#main{
+	min-height: 500px;
+}
+.set_on_top{
+  z-index: 1;
+}

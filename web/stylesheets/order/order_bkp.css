@@ -1,0 +1,95 @@
+input[type=radio],input[type=checkbox] {
+  vertical-align: middle;
+}
+
+.tinytf {
+  width: 50px;
+}
+
+.smalltf {  
+	width: 118px;
+	height: 30px;
+}
+
+.input {
+  display: inline;
+}
+
+.help-block {
+  display: none;
+}
+
+.form_default .spotsDiv label {
+    float: left;
+    margin-right: 20px;
+    padding-top: 5px;
+    text-align: left;
+    width: 150px;
+} 
+
+table.gridtable {
+	/**font-family: verdana,arial,sans-serif;**/
+	font-family: DroidSansRegular, "Segoe UI", "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #ccc;
+	background-color: #dedede;
+}
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #ccc;
+	background-color: #ffffff;
+}
+
+.dpDiv label {
+	display:none;
+}
+
+/** Starts here **/	
+.form_default div#topCntr select {
+	width: 35%;
+}
+
+div.form_default div {
+	margin-bottom: 5px;
+}
+
+.form_default button {
+    margin-left: 0px;
+}
+
+dd.info {
+	display: none;
+}
+/** Ends here **/
+
+/** Program autocomplete **/
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+    width: 350px;
+  }
+  
+  

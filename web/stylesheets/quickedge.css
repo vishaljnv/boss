@@ -1,0 +1,156 @@
+/* common width in */
+
+.comboBox
+{
+	width:250px;
+}
+textarea
+{
+resize:none;	
+}
+
+.mandatory {
+	color: red;
+}
+
+.pgTitle {
+	top:5px;
+	left:45%;
+	font-size: 17px;
+	position:absolute;
+	text-shadow: 1px 1px #FFFFFF;
+	font-weight: bold;
+}
+
+.submenu {right: 0%;position: absolute;top: 0px;} 
+.submenu li{cursor:pointer;} 
+
+.form_default button {
+    text-shadow: 1px 1px #395380;
+    text-transform: none;
+}
+
+.lf {
+    width: 100%;
+}
+
+.mf { 
+	width: 50%; 
+}
+
+.sf { 
+	width: 25%; 
+}
+
+.sfinpc { 
+	width: 25%; 
+}
+
+.mfinpc {
+    width: 50%;
+}
+
+.lfinpc {
+    width: 100%;
+}
+
+.lfinpx {
+    width: 38px;
+}
+
+.smalltf {
+    width: 118px;
+}
+
+/*calendar.gif position inside text field for datepicker */
+img.ui-datepicker-trigger {
+      position: relative;
+      left: -34px;
+      top: 3px;
+}
+
+.ui-datepicker{ 
+	z-index: 16000 !important;
+}
+
+/** label to be used in add/edit forms **/
+div.form_default label {
+	width:175px;
+}
+
+.form_default button.cancel {
+	margin-left: 20px;
+}
+
+.form_default button.cancelBrk {
+	margin-left: 20px;
+}
+
+.form_default button {
+    margin-left: 0px;
+}
+
+.errorMsg {
+	background: none repeat scroll 0 0 #EE0101;
+    border: 2px solid #DDDDDD;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 0 6px #000000;
+    color: #FFFFFF;
+    font-family: tahoma;
+    font-size: 11px;
+    margin-left: 28%;
+    padding: 4px 10px;
+    position: relative;
+    width: 150px;
+    z-index: 5001;
+}
+
+/** break template **/
+.brkName{
+	width: 200px;
+}
+	
+.brkTime {
+	width: 50px;
+}
+
+.jGrowl-message{
+	color: black;
+}
+
+.error{
+	border : 1px solid red;
+}
+
+.closeThumbnail {
+    display: block;
+    position: absolute;
+    width:16px;
+    height:16px;
+    top: -8px;
+    right: -8px;
+    background: url("../images/close.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.button_brown {
+ 	background: url("../images/buttons/button_brown.png") repeat-x scroll left top #333 !important;
+}
+
+.button_black {
+ 	background: url("../images/buttons/button_black.png") repeat-x scroll left top #333 !important;
+}
+
+/*jquery timepicker width set to fixed width*/
+.ui-timepicker-wrapper {
+	width: 92px;
+}
+
+table {
+    table-layout:fixed;
+}
+td{
+    overflow:hidden;
+    text-overflow: ellipsis;
+}

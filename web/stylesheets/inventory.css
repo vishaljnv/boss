@@ -1,0 +1,29 @@
+
+#inv_fields{
+	display: block;
+	border: 1px solid #c3c3c3;
+	width: 100%;
+	padding: 10px;
+	margin-top: 10px;
+	background: #e0e0e0;
+}
+#inv_fields .inv_label{
+	color: #000;
+}
+#inv_fields p{
+	display: inline;
+	margin-right: 10px;
+}
+#get_inventory{
+	margin-left: 20px;
+}
+.inv_filter_field{
+	display: none;
+}
+.available_month{
+	background: #d6f6d6;
+}
+.non_available_month{
+	background: #f6d9d9;
+	font-size: 0.9em;
+}
