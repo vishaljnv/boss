@@ -4,6 +4,8 @@ ACCOUNT_TYPES_COLLECTION_NAME     = "account_types"
 USERS_COLLECTION_NAME             = 'users'
 TRANSACTIONS_COLLECTION_NAME      = 'transactions'
 
+CONFIG_FILE_PATH          = "/opt/etc"
+
 PASSWORD_MIN_LENGTH       = 8
 USERNAME_MIN_LENGTH       = 8
 
