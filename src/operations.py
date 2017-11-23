@@ -84,7 +84,7 @@ def create_customer_account(account_type, name, email):
     username = generate_username()
     password = generate_password()
 
-    account["holder_name"] = name
+    account["name"] = name
     account["type"] = account_type
     account["username"] = username
     account["password"] = password

@@ -73,3 +73,22 @@ def account_number_exists(acc_num):
 
 def username_exists(username):
     return bool(accounts.find_one({"username":username}))
+
+
+def get_account_created_template():
+    return read_string_template("../email_templates/account_created.txt")
+
+
+def get_money_sent_template():
+    return read_string_template("../email_templates/money_sent.txt")
+
+
+def get_money_received_template():
+    return read_string_template("../email_templates/money_received.txt")
+
+
+def read_string_template(filename):
+    with open(filename, 'r') as template_file:
+        template_file_content = template_file.read()
+    return Template(template_file_content)
+
