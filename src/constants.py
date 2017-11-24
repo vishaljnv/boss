@@ -1,8 +1,9 @@
 DB_NAME                           = "bank"
 ACCOUNTS_COLLECTION_NAME          = "accounts"
 ACCOUNT_TYPES_COLLECTION_NAME     = "account_types"
-USERS_COLLECTION_NAME             = 'users'
-TRANSACTIONS_COLLECTION_NAME      = 'transactions'
+USERS_COLLECTION_NAME             = "users"
+TRANSACTIONS_COLLECTION_NAME      = "transactions"
+EMPLOYEES_COLLECTION_NAME         = "employees"
 
 CONFIG_FILE_PATH          = "/opt/etc"
 
@@ -31,3 +32,12 @@ USER_TYPE_ADMIN                   = 'admin'
 TRANSACTION_TYPE_TRANSFER         = 'transfer'
 TRANSACTION_TYPE_DEPOSIT          = 'deposit'
 TRANSACTION_TYPE_WITHDRAW         = 'withdraw'
+
+CMD_CREATE_ACCOUNT                = "CreateAccount"
+CMD_DELETE_ACCOUNT                = "DeleteAccount"
+CMD_FREEZE_ACCOUNT                = "FreezeAccount"
+CMD_REACTIVATE_ACCOUNT            = "ReActivateAccount"
+CMD_GET_ACCOUNT_SUMMARY           = "AccountSummary"
+CMD_TRANSFER_FUNDS                = "TransferFunds"
+CMD_DEPOSIT_FUNDS                 = "DepositFunds"
+CMD_WITHDRAW_FUNDS                = "WithdrawFunds"

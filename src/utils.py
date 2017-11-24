@@ -2,6 +2,7 @@ import socket
 import json
 import errno
 import pymongo
+import sys
 
 from constants import *
 from config import *
@@ -43,6 +44,17 @@ def get_connection_to_server():
     return sock
 
 
+def send_command_to_server(cmd):
+    error = None
+    try:
+        server = get_connection_to_server()
+        send_data_to_peer(server, cmd)
+    except Exception, ex:
+        error = str(ex)
+
+    return server, error
+
+
 def get_mongo_connection():
     return pymongo.MongoClient()
 
@@ -53,6 +65,10 @@ def get_banking_db(mongo_con):
 
 def get_accounts_collection(db):
     return db[ACCOUNTS_COLLECTION_NAME]
+
+
+def get_employees_collection(db):
+    return db[EMPLOYEES_COLLECTION_NAME]
 
 
 def get_users_collection(db):
@@ -87,8 +103,15 @@ def get_money_received_template():
     return read_string_template("../email_templates/money_received.txt")
 
 
-def read_string_template(filename):
-    with open(filename, 'r') as template_file:
-        template_file_content = template_file.read()
-    return Template(template_file_content)
+def get_money_deposit_template():
+    return read_string_template("../email_templates/money_deposit.txt")
 
+
+def get_money_withdraw_template():
+    return read_string_template("../email_templates/money_withdraw.txt")
+
+
+def read_string_template(filename):
+    with open(filename, 'r') as email_template:
+        email_template_content = email_template.read()
+    return Template(email_template_content)

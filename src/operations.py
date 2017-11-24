@@ -25,6 +25,12 @@ def exceeds_daily_transfer_limit(account_type, amount):
     return False
 
 
+def get_account_balance(acc_number):
+    accounts = get_accounts_collection(db)
+    account = accounts.find_one({"number":acc_number})
+    return account["balance"]
+
+
 def get_account_details_by_username(username):
     accounts = get_accounts_collection(db)
     return accounts.find_one({"username":username})
@@ -43,6 +49,11 @@ def delete_user_acccount_by_username(username):
 def put_account_on_hold_by_username(username):
     accounts = get_accounts_collection(db)
     accounts.update({"username":username},{"$set":{"hold":True}})
+
+
+def reactivate_account_by_username(username):
+    accounts = get_accounts_collection(db)
+    accounts.update({"username":username, "hold":True},{"$set":{"hold":False}})
 
 
 def is_account_on_hold(username):
@@ -66,6 +77,11 @@ def insert_user_account_into_database(user):
     users.insert(user)
 
 
+def insert_employee_account_into_database(employee):
+    employees = get_employees_collection(db)
+    employees.insert(employee)
+
+
 def add_transaction_to_db(transaction):
     transactions = get_transactions_collection(db)
     transactions.insert(transaction)
@@ -76,7 +92,7 @@ def update_account_balance(acc_num, new_bal):
     accounts.update({"number":acc_num},{"$set":{"balance":new_bal}})
 
 
-def create_customer_account(account_type, name, email):
+def create_customer_account(account_type, details):
     account = {}
     user = {}
 
@@ -84,7 +100,9 @@ def create_customer_account(account_type, name, email):
     username = generate_username()
     password = generate_password()
 
-    account["name"] = name
+    account["name"] = details["name"]
+    account["email"] = details["email"]
+    account["ssn"] = details["ssn"]
     account["type"] = account_type
     account["username"] = username
     account["password"] = password
@@ -92,7 +110,7 @@ def create_customer_account(account_type, name, email):
     
     user["username"] = username
     user["password"] = password
-    user["type"] = 'customer'
+    user["type"] = USER_TYPE_CUSTOMER
 
     insert_user_account_into_database(user)
     insert_bank_account_into_database(account)
@@ -101,15 +119,23 @@ def create_customer_account(account_type, name, email):
 
 def create_teller_account(name, email):
     user = {}
+    employee = {}
 
     username = generate_username()
     password = generate_password()
+    employee_id = generate_employee_id()
+
+    employee["name"] = name
+    employee["email"] = email
+    employee["username"] = username
+    employee["employee_id"] = int(employee_id)
 
     user["username"] = username
     user["password"] = password
-    user["type"] = 'teller'
+    user["type"] = USER_TYPE_TELLER
 
     insert_user_account_into_database(user)
+    insert_employee_account_into_database(employee)
     return user
 
 
@@ -141,6 +167,20 @@ def generate_password():
 
     chars = string.ascii_letters + string.digits + string.punctuation
     return ''.join(random.choice(chars) for _ in range(PASSWORD_MIN_LENGTH))
+
+
+def generate_employee_id():
+    now = datetime.datetim.today()
+    employees = get_employees_collection(db)
+    last = employees.find_one(sort=[("employee_id", pymongo.DESCENDING)])
+    if not last:
+        new_id = "001"
+    else:
+        str_len = len(str(last["employee_id"]))
+        new_id = (3 - str_len) * "0" + str(last["employee_id"])
+
+    employee_id = str(now.year) + new_id
+    return employee_id
 
 
 def get_account_summary_by_username(username):
