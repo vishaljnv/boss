@@ -5,6 +5,10 @@ import os
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+def check_authenticated():
+    return {"username": session.get("user")}
+
+
 @app.route('/', methods=['GET','POST'])
 def index():
     if request.method == 'POST':

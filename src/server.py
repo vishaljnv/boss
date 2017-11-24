@@ -9,10 +9,13 @@ import datetime
 
 from thread import *
 from constants import *
+from logger import get_logger
 
 sys.path.append(CONFIG_FILE_PATH)
 from config import *
 from utils import *
+
+log = get_logger(logFileName="socketServer.log")
 
 mongoConection = get_mongo_connection()
 
@@ -28,7 +31,7 @@ def main():
     try:
         optlist, args = getopt.getopt(sys.argv[1:], "p:")
     except getopt.GetoptError as err:
-        print str(err)
+        log.error(str(err))
         usage()
         sys.exit(-1)
 
@@ -44,7 +47,7 @@ def main():
 
 
 def usage():
-    print '/server.py -p port'
+    log.info('/server.py -p port')
 
 
 def get_account_smmary(request):
@@ -150,6 +153,7 @@ def transfer(request):
     if validation["result"] != 'passed':
         return validation
 
+    log.debug("Transfering $%d from %d to %d"%(payer_acc["number"], payee_acc["number"]))
     transaction = {}
     transaction["account_number"] = payer_acc["number"]
     transaction["type"] = TRANSACTION_TYPE_TRANSFER
@@ -172,6 +176,7 @@ def transfer(request):
     update_account_balance(payee_acc["number"], payee_new_balance)
     update_account_balance(payer_acc["number"], payer_new_balance)
 
+    log.debug("Transfered $%d from %d to %d"%(payer_acc["number"], payee_acc["number"]))
     msg["result"] = 'passed'
     msg["errmsg"] = 'Transfer Complete!'
     return msg
