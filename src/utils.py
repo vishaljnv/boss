@@ -5,7 +5,9 @@ import pymongo
 import sys
 
 from constants import *
+sys.path.append(CONFIG_FILE_PATH)
 from config import *
+
 
 def get_data_from_peer(con):
     request = None
@@ -38,16 +40,33 @@ def send_data_to_peer(con, data):
     return 0
 
 
+def get_all_installed_servers():
+    return SERVERS.split(",")
+
+
 def get_connection_to_server():
+    servers = get_all_installed_servers()
     sock = socket.socket()
-    sock.connect((SERVER_IP, SERVER_PORT))
-    return sock
+    for server in servers:
+        sock.settimeout(3)
+        try:
+            sock.connect((server, SOCKET_SERVER_PORT))
+            sock.settimeout(None)
+            return sock
+        except socket.error, ex:
+            log.debug("Could not connect to %s"%(server["ip"]))
+
+    log.error("All servers down!!")
+    return None
 
 
 def send_command_to_server(cmd):
     error = None
     try:
         server = get_connection_to_server()
+        if not server:
+            raise Exception("All servers down! Please Try again after some time.")
+
         send_data_to_peer(server, cmd)
     except Exception, ex:
         error = str(ex)
@@ -56,7 +75,7 @@ def send_command_to_server(cmd):
 
 
 def get_mongo_connection():
-    return pymongo.MongoClient()
+    return pymongo.MongoClient(SERVERS, MONGO_DB_PORT, fsync=True)
 
 
 def get_banking_db(mongo_con):

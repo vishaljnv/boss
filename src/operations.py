@@ -1,6 +1,8 @@
 import random
 import string
 
+from utils import *
+
 mongo_con = get_mongo_connection()
 db = get_banking_db(mongo_con)
 

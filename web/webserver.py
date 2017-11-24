@@ -247,4 +247,4 @@ def logout():
     return 'Dropped!'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host=WEB_SERVER_IP, port=WEB_SERVER_PORT, debug=True)

@@ -7,20 +7,24 @@ import getopt
 import uuid
 import datetime
 
+sys.path.append("..")
+
 from thread import *
 from constants import *
 from logger import get_logger
+from email_client import EmailClient
 
 sys.path.append(CONFIG_FILE_PATH)
 from config import *
-from utils import *
+from operations import *
 
 log = get_logger(logFileName="socketServer.log")
 
-mongoConection = get_mongo_connection()
+mailer = EmailClient(db)
 
 def passiveTCP(port):
     sock = socket.socket()
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(("0.0.0.0",port))
     sock.listen(10)
 
@@ -35,7 +39,7 @@ def main():
         usage()
         sys.exit(-1)
 
-    port = SERVER_PORT
+    port = SOCKET_SERVER_PORT
     for opt, arg in optlist:
         if opt == '-p':
             port = int(arg)
@@ -143,6 +147,8 @@ def validate_funds_transfer(request):
 
 def transfer(request):
     msg = {}
+    payer_update = {}
+    payee_update = {}
 
     username = request.get("username")
     payer_acc = get_account_details_by_username(username)
@@ -154,27 +160,28 @@ def transfer(request):
         return validation
 
     log.debug("Transfering $%d from %d to %d"%(payer_acc["number"], payee_acc["number"]))
-    transaction = {}
-    transaction["account_number"] = payer_acc["number"]
-    transaction["type"] = TRANSACTION_TYPE_TRANSFER
-    transaction["credits"] = 0
-    transaction["debits"] = amount
-    transaction["date"] = datetime.datetime.today().strftime("%m/%d/%y")
-    transaction["mode"] = "Online Transfer"
-    add_transaction_to_db(transaction)
+    payer_update["account_number"] = payer_acc["number"]
+    payer_update["type"] = TRANSACTION_TYPE_TRANSFER
+    payer_update["credits"] = 0
+    payer_update["debits"] = amount
+    payer_update["date"] = datetime.datetime.today().strftime("%m/%d/%y")
+    payer_update["mode"] = "Online Transfer"
 
-    transaction["account_number"] = payee_acc["number"]
-    transaction["type"] = TRANSACTION_TYPE_TRANSFER
-    transaction["credits"] = amount
-    transaction["debits"] = 0
-    transaction["mode"] = "Online Transfer"
-    add_transaction_to_db(transaction)
+    payee_update["account_number"] = payee_acc["number"]
+    payee_update["type"] = TRANSACTION_TYPE_TRANSFER
+    payee_update["credits"] = amount
+    payee_update["debits"] = 0
+    payee_update["mode"] = "Online Transfer"
 
     payee_new_balance = payee_acc["balance"] + amount
     payer_new_balance = payer_acc["balance"] - amount
 
     update_account_balance(payee_acc["number"], payee_new_balance)
     update_account_balance(payer_acc["number"], payer_new_balance)
+
+    add_transaction_to_db(payer_update)
+    add_transaction_to_db(payee_update)
+    mailer.sendTransferUpdate(payer_update, payee_update)
 
     log.debug("Transfered $%d from %d to %d"%(payer_acc["number"], payee_acc["number"]))
     msg["result"] = 'passed'
@@ -234,11 +241,12 @@ def deposit(request):
     transaction["debits"] = 0
     transaction["date"] = datetime.datetime.today().strftime("%m/%d/%y")
     transaction["mode"] = "Cash Deposit"
-    add_transaction_to_db(transaction)
 
     new_balance = account["balance"] + amount
     update_account_balance(acc_num, new_balance)
 
+    add_transaction_to_db(transaction)
+    mailer.sendDepositUpdate(transaction)
     msg["result"] = 'passed'
     msg["errmsg"] = 'Deposit Complete!'
     return msg
@@ -266,10 +274,12 @@ def withdraw(request):
     transaction["debits"] = amount
     transaction["date"] = datetime.datetime.today().strftime("%m/%d/%y")
     transaction["mode"] = "Cash Withdraw"
-    add_transaction_to_db(transaction)
 
     new_balance = account["balance"] - amount
     update_account_balance(acc_num, new_balance)
+
+    add_transaction_to_db(transaction)
+    mailer.sendWithdrawUpdate(transaction)
 
     msg["result"] = 'passed'
     msg["errmsg"] = 'Withdraw Complete!'
@@ -277,27 +287,34 @@ def withdraw(request):
 
 
 def handleClient(con):
-    request = get_data_from_peer(con)
-    if not request:
-        print "get request failed!"
+    response = {}
+    try:
+        request = get_data_from_peer(con)
+        if not request:
+            log.error("get request failed!")
 
-    cmd = request.get('cmd')
-    if cmd == CMD_CREATE_ACCOUNT:
-        response = create_account(request)
-    elif cmd == CMD_DELETE_ACCOUNT:
-        response = delete_account(request)
-    elif cmd == CMD_FREEZE_ACCOUNT:
-        response == freeze_account(request)
-    elif cmd == CMD_REACTIVATE_ACCOUNT:
-        response == reactivate_account(request)
-    elif cmd == CMD_GET_ACCOUNT_SUMMARY:
-        response = get_account_summary(request)
-    elif cmd == CMD_TRANSFER_FUNDS:
-        response = transfer(request)
-    elif cmd == CMD_DEPOSIT_FUNDS:
-        response = deposit(request)
-    elif cmd == CMD_WITHDRAW_FUNDS:
-        response = withdraw(request)
+        cmd = request.get('cmd')
+        if cmd == CMD_CREATE_ACCOUNT:
+            response = create_account(request)
+        elif cmd == CMD_DELETE_ACCOUNT:
+            response = delete_account(request)
+        elif cmd == CMD_FREEZE_ACCOUNT:
+            response == freeze_account(request)
+        elif cmd == CMD_REACTIVATE_ACCOUNT:
+            response == reactivate_account(request)
+        elif cmd == CMD_GET_ACCOUNT_SUMMARY:
+            response = get_account_summary(request)
+        elif cmd == CMD_TRANSFER_FUNDS:
+            response = transfer(request)
+        elif cmd == CMD_DEPOSIT_FUNDS:
+            response = deposit(request)
+        elif cmd == CMD_WITHDRAW_FUNDS:
+            response = withdraw(request)
+
+    except Exception, ex:
+        error = str(ex)
+        response = {"errmsg":error,"result":"failed"}
+        log.error(error)
 
     if response:
         send_data_to_peer(con, response)
