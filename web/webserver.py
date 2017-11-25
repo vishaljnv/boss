@@ -1,6 +1,12 @@
 #!/home/vishal/anaconda2/bin/python
 from flask import Flask, session, render_template, request, url_for, redirect
 import os
+import sys
+sys.path.append("..")
+from src.constants import *
+
+sys.path.append(CONFIG_FILE_PATH)
+from config import *
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -11,15 +17,6 @@ def check_authenticated():
 
 @app.route('/', methods=['GET','POST'])
 def index():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        account = accounts.find_one({'username':username})
-        if not account:
-            return login_failed()
-
-        session['user'] = request.form['username']
-        return redirect(url_for('home'))
-
     return render_template('index.html')
 
 @app.route('/accounts',methods=['GET'])

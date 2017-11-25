@@ -54,7 +54,7 @@ def usage():
     log.info('/server.py -p port')
 
 
-def get_account_smmary(request):
+def get_account_summary(request):
     if "username" in request:
         return get_account_summary_by_username(request["username"])
     if "account_number" in request:
@@ -68,36 +68,60 @@ def create_new_account(request):
     if request["user_type"] == USER_TYPE_CUSTOMER:
         account, user = create_customer_account(request["account_type"], request)
 
-    msg["result"] = 'success'
+    mailer.sendAccountCreatedUpdate(user)
+    msg["result"] = "passed"
+    msg["errmsg"] = "success"
     return msg
 
 
 def delete_account(request):
-    username = request.get("username")
-    account = get_account_details_by_username(username)
-    if not username_exists(username):
-        raise Exception("User account does not exist!")
+    msg = {}
+    user_type = request.get("user_type")
+    if user_type == USER_TYPE_CUSTOMER:
+        acc_num = request.get("account_number")
+        if not account_number_exists(acc_num):
+            raise Exception("Account does not exist!")
 
-    delete_bank_acccount_by_username(username)
-    delete_user_acccount_by_username(username)
+        username = get_username_of_the_account(acc_num)
+        delete_bank_acccount(acc_num)
+    elif user_type == USER_TYPE_TELLER:
+        employee_id = request.get("employee_id")
+        username = get_username_of_employee(employee_id)
+        if not username_exists(username):
+            raise Exception("Employee details not found!")
+
+        delete_employee_account(employee_id)
+
+    delete_user_acccount(username)
+    msg["result"] = 'passed'
+    msg["errmsg"] = 'success'
+    return msg
 
 
 def freeze_account(request):
-    username = request.get("username")
-    account = get_account_details_by_username(username)
-    if not username_exists(username):
-        raise Exception("User account does not exist!")
+    msg = {}
+    acc_num = request.get("account_number")
+    if not account_number_exists(acc_num):
+        raise Exception("Account does not exist!")
 
-    put_account_on_hold_by_username(username)
+    put_bank_account_on_hold(acc_num)
+
+    msg["result"] = 'passed'
+    msg["errmsg"] = 'success'
+    print "Returning:",msg
+    return msg
 
 
 def reactivate_account(request):
-    username = request.get("username")
-    account = get_account_details_by_username(username)
-    if not username_exists(username):
-        raise Exception("User account does not exist!")
+    msg = {}
+    acc_num = request.get("account_number")
+    if not account_number_exists(acc_num):
+        raise Exception("Account does not exist!")
 
-    reactivate_account_by_username(username)
+    reactivate_bank_account(acc_num)
+    msg["result"] = 'passed'
+    msg["errmsg"] = 'success'
+    return msg
 
 
 def validate_funds_transfer(request):
@@ -126,8 +150,13 @@ def validate_funds_transfer(request):
         msg["result"] = 'failed'
         return msg
 
-    if is_account_on_hold(username):
-        msg["errmsg"] = 'Account put on hold'
+    if is_account_on_hold(payer_acc["number"]):
+        msg["errmsg"] = 'Your account is put on hold. Contact Admin.'
+        msg["result"] = 'failed'
+        return msg
+
+    if is_account_on_hold(payee_acc_num):
+        msg["errmsg"] = 'Payee account put on hold'
         msg["result"] = 'failed'
         return msg
 
@@ -136,7 +165,7 @@ def validate_funds_transfer(request):
         msg["result"] = 'failed'
         return msg
 
-    if exceeds_daily_transfer_limit(account_type, amount):
+    if exceeds_daily_transfer_limit(payer_account_type, amount):
         msg["errmsg"] = 'This transaction exceeds daily transaction limit'
         msg["result"] = 'failed'
         return msg
@@ -159,7 +188,7 @@ def transfer(request):
     if validation["result"] != 'passed':
         return validation
 
-    log.debug("Transfering $%d from %d to %d"%(payer_acc["number"], payee_acc["number"]))
+    log.debug("Transfering $%d from %d to %d"%(amount, payer_acc["number"], payee_acc["number"]))
     payer_update["account_number"] = payer_acc["number"]
     payer_update["type"] = TRANSACTION_TYPE_TRANSFER
     payer_update["credits"] = 0
@@ -171,6 +200,7 @@ def transfer(request):
     payee_update["type"] = TRANSACTION_TYPE_TRANSFER
     payee_update["credits"] = amount
     payee_update["debits"] = 0
+    payee_update["date"] = datetime.datetime.today().strftime("%m/%d/%y")
     payee_update["mode"] = "Online Transfer"
 
     payee_new_balance = payee_acc["balance"] + amount
@@ -183,7 +213,7 @@ def transfer(request):
     add_transaction_to_db(payee_update)
     mailer.sendTransferUpdate(payer_update, payee_update)
 
-    log.debug("Transfered $%d from %d to %d"%(payer_acc["number"], payee_acc["number"]))
+    log.debug("Transfered $%d from %d to %d"%(amount, payer_acc["number"], payee_acc["number"]))
     msg["result"] = 'passed'
     msg["errmsg"] = 'Transfer Complete!'
     return msg
@@ -192,25 +222,21 @@ def transfer(request):
 def validate_deposit_or_withdraw(request):
     msg = {}
 
-    username = request.get("username")
-    account = get_account_details_by_username(username)
+    acc_num = request.get("account_number")
     amount = request["amount"]
 
-    if not username_exists(username):
-        raise Exception("User account does not exist!")
-
-    if not account:
+    if not account_number_exists(acc_num):
         msg["errmsg"] = 'Invalid account number'
         msg["result"] = 'failed'
         return msg
 
-    account_type = account["type"]
+    account_type =  get_account_type(acc_num)
     if account_type == ACCOUNT_TYPE_DEPOSIT:
         msg["errmsg"] = 'Transfer not allowed to/from deposit account'
         msg["result"] = 'failed'
         return msg
 
-    if is_account_on_hold(username):
+    if is_account_on_hold(acc_num):
         msg["errmsg"] = 'Account put on hold'
         msg["result"] = 'failed'
         return msg
@@ -227,7 +253,6 @@ def validate_deposit_or_withdraw(request):
 def deposit(request):
     msg = {}
     acc_num = request.get("account_number")
-    account = get_account_details_by_account_number(acc_num)
     amount = request["amount"]
 
     validation = validate_deposit_or_withdraw(request)
@@ -242,7 +267,8 @@ def deposit(request):
     transaction["date"] = datetime.datetime.today().strftime("%m/%d/%y")
     transaction["mode"] = "Cash Deposit"
 
-    new_balance = account["balance"] + amount
+    cur_bal = get_account_balance(acc_num)
+    new_balance = cur_bal + amount
     update_account_balance(acc_num, new_balance)
 
     add_transaction_to_db(transaction)
@@ -255,7 +281,6 @@ def deposit(request):
 def withdraw(request):
     msg = {}
     acc_num = request.get("account_number")
-    account = get_account_details_by_account_number(acc_num)
     amount = request["amount"]
 
     validation = validate_deposit_or_withdraw(request)
@@ -275,7 +300,9 @@ def withdraw(request):
     transaction["date"] = datetime.datetime.today().strftime("%m/%d/%y")
     transaction["mode"] = "Cash Withdraw"
 
-    new_balance = account["balance"] - amount
+    cur_bal = get_account_balance(acc_num)
+    new_balance = cur_bal - amount
+
     update_account_balance(acc_num, new_balance)
 
     add_transaction_to_db(transaction)
@@ -283,6 +310,20 @@ def withdraw(request):
 
     msg["result"] = 'passed'
     msg["errmsg"] = 'Withdraw Complete!'
+    return msg
+
+
+def get_teller_details(request):
+    msg = {}
+    employee_id = request.get("employee_id")
+    employee = get_employee_details(employee_id)
+    if not employee:
+        raise Exception("Employee details not found")
+
+    del employee["_id"]
+    msg["data"] = employee
+    msg["result"] = 'passed'
+    msg["errmsg"] = 'success'
     return msg
 
 
@@ -295,15 +336,17 @@ def handleClient(con):
 
         cmd = request.get('cmd')
         if cmd == CMD_CREATE_ACCOUNT:
-            response = create_account(request)
+            response = create_new_account(request)
         elif cmd == CMD_DELETE_ACCOUNT:
             response = delete_account(request)
         elif cmd == CMD_FREEZE_ACCOUNT:
-            response == freeze_account(request)
+            response = freeze_account(request)
         elif cmd == CMD_REACTIVATE_ACCOUNT:
-            response == reactivate_account(request)
+            response = reactivate_account(request)
         elif cmd == CMD_GET_ACCOUNT_SUMMARY:
             response = get_account_summary(request)
+        elif cmd == CMD_GET_TELLER_DETAILS:
+            response = get_teller_details(request)
         elif cmd == CMD_TRANSFER_FUNDS:
             response = transfer(request)
         elif cmd == CMD_DEPOSIT_FUNDS:
@@ -313,7 +356,7 @@ def handleClient(con):
 
     except Exception, ex:
         error = str(ex)
-        response = {"errmsg":error,"result":"failed"}
+        response = {"errmsg":error,"result":"failed", "data":None}
         log.error(error)
 
     if response:

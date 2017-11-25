@@ -1,5 +1,6 @@
 import random
 import string
+import datetime
 
 from utils import *
 
@@ -38,29 +39,34 @@ def get_account_details_by_username(username):
     return accounts.find_one({"username":username})
 
 
-def delete_bank_acccount_by_username(username):
+def delete_bank_acccount(acc_num):
     accounts = get_accounts_collection(db)
-    accounts.remove({"username":username})
+    accounts.remove({"number":acc_num})
 
 
-def delete_user_acccount_by_username(username):
+def delete_user_acccount(username):
     users = get_users_collection(db)
     users.remove({"username":username})
 
 
-def put_account_on_hold_by_username(username):
+def delete_employee_account(employee_id):
+    employees = get_employees_collection(db)
+    employees.remove({"employee_id":employee_id})
+
+
+def put_bank_account_on_hold(acc_num):
     accounts = get_accounts_collection(db)
-    accounts.update({"username":username},{"$set":{"hold":True}})
+    accounts.update({"number":acc_num},{"$set":{"hold":True}})
 
 
-def reactivate_account_by_username(username):
+def reactivate_bank_account(acc_num):
     accounts = get_accounts_collection(db)
-    accounts.update({"username":username, "hold":True},{"$set":{"hold":False}})
+    accounts.update({"number":acc_num, "hold":True},{"$set":{"hold":False}})
 
 
-def is_account_on_hold(username):
+def is_account_on_hold(acc_num):
     accounts = get_accounts_collection(db)
-    account =  accounts.find_one({"username":username})
+    account =  accounts.find_one({"number":acc_num})
     return account.get("hold",False)
 
 
@@ -109,6 +115,7 @@ def create_customer_account(account_type, details):
     account["username"] = username
     account["password"] = password
     account["number"] = acc_num
+    account["balance"] = 0
     
     user["username"] = username
     user["password"] = password
@@ -158,7 +165,7 @@ def generate_username():
     username = ''
     while True:
         for i in range(USERNAME_MIN_LENGTH):
-            username += random.choice(string.lowrcase + string.uppercase + string.digits)
+            username += random.choice(string.lowercase + string.uppercase + string.digits)
 
         if not username_exists(username):
             return username
@@ -167,12 +174,12 @@ def generate_username():
 def generate_password():
     '''Generate random password having alphabets, numbers and special characters.'''
 
-    chars = string.ascii_letters + string.digits + string.punctuation
+    chars = string.ascii_letters + string.digits + "@!$"
     return ''.join(random.choice(chars) for _ in range(PASSWORD_MIN_LENGTH))
 
 
 def generate_employee_id():
-    now = datetime.datetim.today()
+    now = datetime.datetime.today()
     employees = get_employees_collection(db)
     last = employees.find_one(sort=[("employee_id", pymongo.DESCENDING)])
     if not last:
@@ -192,10 +199,12 @@ def get_account_summary_by_username(username):
         raise Exception("Account details not available!")
 
     summary["account_number"] = account["number"]
-    summary["account_type"] = account["type"]
-    summary["account_balance"] = account["balance"]
-    summary["account_holder_name"] = account["holder_name"]
+    summary["type"] = account["type"]
+    summary["balance"] = account["balance"]
+    summary["name"] = account["name"]
+    summary["hold"] = account.get("hold",False)
     return summary
+
 
 def get_account_summary_by_account_number(account_number):
     summary = {}
@@ -204,7 +213,43 @@ def get_account_summary_by_account_number(account_number):
         raise Exception("Account details not available!")
 
     summary["account_number"] = account["number"]
-    summary["account_type"] = account["type"]
-    summary["account_balance"] = account["balance"]
-    summary["account_holder_name"] = account["holder_name"]
+    summary["type"] = account["type"]
+    summary["balance"] = account["balance"]
+    summary["name"] = account["name"]
     return summary
+
+
+def get_account_type(acc_num):
+    accounts = get_accounts_collection(db)
+    account = accounts.find_one({"number":acc_num})
+    if not account:
+        raise Exception("Account does not exist")
+
+    return account["type"]
+
+
+def get_username_of_the_account(acc_num):
+    accounts = get_accounts_collection(db)
+    account = accounts.find_one({"number":acc_num})
+    if not account:
+        raise Exception("Account does not exist")
+
+    return account["username"]
+
+
+def get_employee_details(employee_id):
+    employees = get_employees_collection(db)
+    return employees.find_one({"employee_id":employee_id})
+
+
+def get_employee_details_by_username(username):
+    employees = get_employees_collection(db)
+    return employees.find_one({"username":username})
+
+
+def get_username_of_employee(employee_id):
+    employee = get_employee_details(employee_id)
+    if not employee:
+        raise Exception("Employee details not found")
+
+    return employee.get("username")

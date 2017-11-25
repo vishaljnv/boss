@@ -7,7 +7,7 @@ import sys
 from constants import *
 sys.path.append(CONFIG_FILE_PATH)
 from config import *
-
+from string import Template
 
 def get_data_from_peer(con):
     request = None
