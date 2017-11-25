@@ -3,6 +3,7 @@ import json
 import errno
 import pymongo
 import sys
+import rpyc
 
 from constants import *
 sys.path.append(CONFIG_FILE_PATH)
@@ -42,6 +43,18 @@ def send_data_to_peer(con, data):
 
 def get_all_installed_servers():
     return SERVERS.split(",")
+
+
+def get_connection_to_email_service():
+    servers = get_all_installed_servers()
+    for server in servers:
+        try:
+            mailer = rpyc.connect(server, EMAIL_SERVICE_PORT)
+            return mailer
+        except Exception, ex:
+            print "Email service on %s is down! %s"%(server, str(ex))
+
+    return None
 
 
 def get_connection_to_server():

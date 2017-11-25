@@ -12,15 +12,12 @@ sys.path.append("..")
 from thread import *
 from constants import *
 from logger import get_logger
-from email_client import EmailClient
 
 sys.path.append(CONFIG_FILE_PATH)
 from config import *
 from operations import *
 
 log = get_logger(logFileName="socketServer.log")
-
-mailer = EmailClient(db)
 
 def passiveTCP(port):
     sock = socket.socket()
@@ -68,7 +65,7 @@ def create_new_account(request):
     if request["user_type"] == USER_TYPE_CUSTOMER:
         account, user = create_customer_account(request["account_type"], request)
 
-    mailer.sendAccountCreatedUpdate(user)
+    mailer.root.sendAccountCreatedUpdate(user)
     msg["result"] = "passed"
     msg["errmsg"] = "success"
     return msg
@@ -211,7 +208,7 @@ def transfer(request):
 
     add_transaction_to_db(payer_update)
     add_transaction_to_db(payee_update)
-    mailer.sendTransferUpdate(payer_update, payee_update)
+    mailer.root.sendTransferUpdate(payer_update, payee_update)
 
     log.debug("Transfered $%d from %d to %d"%(amount, payer_acc["number"], payee_acc["number"]))
     msg["result"] = 'passed'
@@ -272,7 +269,7 @@ def deposit(request):
     update_account_balance(acc_num, new_balance)
 
     add_transaction_to_db(transaction)
-    mailer.sendDepositUpdate(transaction)
+    mailer.root.sendDepositUpdate(transaction)
     msg["result"] = 'passed'
     msg["errmsg"] = 'Deposit Complete!'
     return msg
@@ -306,7 +303,7 @@ def withdraw(request):
     update_account_balance(acc_num, new_balance)
 
     add_transaction_to_db(transaction)
-    mailer.sendWithdrawUpdate(transaction)
+    mailer.root.sendWithdrawUpdate(transaction)
 
     msg["result"] = 'passed'
     msg["errmsg"] = 'Withdraw Complete!'
@@ -364,4 +361,10 @@ def handleClient(con):
 
 
 if __name__ == '__main__':
+
+    mailer = get_connection_to_email_service()
+    if not mailer:
+        log.debug("Could not connect to mail Service on any host!")
+        sys.exit(-1)
+
     main()

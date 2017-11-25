@@ -1,5 +1,8 @@
+#!/home/vishal/anaconda2/bin/python2.7
+
 import smtplib
 import sys
+import rpyc
 
 from bson import ObjectId
 
@@ -11,19 +14,27 @@ from logger import get_logger
 
 from config import *
 from operations import *
+from rpyc.utils.server import ThreadedServer
 
-log = get_logger()
+log = get_logger(logFileName="emailClient.log")
 
-class EmailClient:
+class EmailClient(rpyc.Service):
 
-    def __init__(self, db):
-        self.db = db
+    def on_connect(self):
+        con = get_mongo_connection()
+        self.db = get_banking_db(con)
         self.me = smtplib.SMTP(host='smtp.gmail.com', port=587)
         self.me.starttls()
-        self.me.login(PROJECT_EMAIL_ID, PROJECT_EMAIL_PASSWORD)
+        try:
+            log.info("Trying login!")
+            self.me.login(PROJECT_EMAIL_ID, PROJECT_EMAIL_PASSWORD)
+            log.info("Logged in!")
+        except Exception, ex:
+            log.error("Could not log in to Gmail! Please check internet connectivity.")
+            sys.exit(-1)
 
 
-    def sendAccountCreatedUpdate(self, user):
+    def exposed_sendAccountCreatedUpdate(self, user):
         user_type = user["type"]
         if user_type == USER_TYPE_CUSTOMER:
             account = get_account_details_by_username(user["username"])
@@ -46,7 +57,7 @@ class EmailClient:
         self.me.sendmail(PROJECT_EMAIL_ID, email_id, message)
 
 
-    def sendTransferUpdate(self, payer, payee):
+    def exposed_sendTransferUpdate(self, payer, payee):
         accounts = get_accounts_collection(self.db)
         payer_acc = accounts.find_one({"number":payer["account_number"]})
 
@@ -71,7 +82,7 @@ class EmailClient:
         self.me.sendmail(PROJECT_EMAIL_ID, payee_acc["email"], message)
 
 
-    def sendDepositUpdate(self, deposit):
+    def exposed_sendDepositUpdate(self, deposit):
         accounts = get_accounts_collection(self.db)
         account = accounts.find_one({"number":deposit["account_number"]})
 
@@ -83,7 +94,7 @@ class EmailClient:
         self.me.sendmail(PROJECT_EMAIL_ID, account["email"], message)
 
 
-    def sendWithdrawUpdate(self, withdraw):
+    def exposed_sendWithdrawUpdate(self, withdraw):
         accounts = get_accounts_collection(self.db)
         account = accounts.find_one({"number":withdraw["account_number"]})
 
@@ -96,4 +107,9 @@ class EmailClient:
 
 
     def __del__(self):
+        log.info("logging out. Good bye!")
         self.me.quit() #Terminate SMTP session
+
+if __name__ == '__main__':
+    t = ThreadedServer(EmailClient, port=EMAIL_SERVICE_PORT)
+    t.start()

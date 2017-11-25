@@ -1,7 +1,8 @@
-WEB_SERVER_IP                 = "0.0.0.0"
-WEB_SERVER_PORT               = 8080
+WEB_SERVER_PORT               = 10101
+SOCKET_SERVER_PORT            = 20202
 
-SOCKET_SERVER_PORT            = 7070
+EMAIL_SERVICE_HOST            = "localhost"
+EMAIL_SERVICE_PORT            = 30303
 
 PROJECT_EMAIL_ID          = "bankofspartans@gmail.com"
 PROJECT_EMAIL_PASSWORD    = "admin@boss"

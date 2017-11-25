@@ -3,6 +3,8 @@ from flask import Flask, session, render_template, request, url_for, redirect
 import os
 import sys
 sys.path.append("..")
+
+from src.logger import get_logger
 from src.constants import *
 
 sys.path.append(CONFIG_FILE_PATH)
@@ -10,6 +12,8 @@ from config import *
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+log = get_logger(logFileName="webServer.log")
 
 def check_authenticated():
     return {"username": session.get("user")}
