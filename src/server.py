@@ -4,7 +4,6 @@ import socket
 import json
 import sys
 import getopt
-import uuid
 import datetime
 
 sys.path.append("..")
@@ -67,7 +66,7 @@ def create_new_account(request):
 
     mailer.root.sendAccountCreatedUpdate(user)
     msg["result"] = "passed"
-    msg["errmsg"] = "success"
+    msg["error"] = "success"
     return msg
 
 
@@ -91,7 +90,7 @@ def delete_account(request):
 
     delete_user_acccount(username)
     msg["result"] = 'passed'
-    msg["errmsg"] = 'success'
+    msg["error"] = 'success'
     return msg
 
 
@@ -104,7 +103,7 @@ def freeze_account(request):
     put_bank_account_on_hold(acc_num)
 
     msg["result"] = 'passed'
-    msg["errmsg"] = 'success'
+    msg["error"] = 'success'
     print "Returning:",msg
     return msg
 
@@ -117,7 +116,7 @@ def reactivate_account(request):
 
     reactivate_bank_account(acc_num)
     msg["result"] = 'passed'
-    msg["errmsg"] = 'success'
+    msg["error"] = 'success'
     return msg
 
 
@@ -138,32 +137,32 @@ def validate_funds_transfer(request):
     payer_account_type = payer_acc["type"]
     payee_account_type = payee_acc["type"]
     if not payee_acc:
-        msg["errmsg"] = 'Invalid Payee account number'
+        msg["error"] = 'Invalid Payee account number'
         msg["result"] = 'failed'
         return msg
 
     if payer_account_type == ACCOUNT_TYPE_DEPOSIT or payee_account_type == ACCOUNT_TYPE_DEPOSIT:
-        msg["errmsg"] = 'Transfer not allowed to/from deposit account'
+        msg["error"] = 'Transfer not allowed to/from deposit account'
         msg["result"] = 'failed'
         return msg
 
     if is_account_on_hold(payer_acc["number"]):
-        msg["errmsg"] = 'Your account is put on hold. Contact Admin.'
+        msg["error"] = 'Your account is put on hold. Contact Admin.'
         msg["result"] = 'failed'
         return msg
 
     if is_account_on_hold(payee_acc_num):
-        msg["errmsg"] = 'Payee account put on hold'
+        msg["error"] = 'Payee account put on hold'
         msg["result"] = 'failed'
         return msg
 
     if get_account_balance(payer_acc["number"]) < amount:
-        msg["errmsg"] = 'Insufficient funds'
+        msg["error"] = 'Insufficient funds'
         msg["result"] = 'failed'
         return msg
 
     if exceeds_daily_transfer_limit(payer_account_type, amount):
-        msg["errmsg"] = 'This transaction exceeds daily transaction limit'
+        msg["error"] = 'This transaction exceeds daily transaction limit'
         msg["result"] = 'failed'
         return msg
 
@@ -212,7 +211,7 @@ def transfer(request):
 
     log.debug("Transfered $%d from %d to %d"%(amount, payer_acc["number"], payee_acc["number"]))
     msg["result"] = 'passed'
-    msg["errmsg"] = 'Transfer Complete!'
+    msg["error"] = 'Transfer Complete!'
     return msg
 
 
@@ -223,23 +222,23 @@ def validate_deposit_or_withdraw(request):
     amount = request["amount"]
 
     if not account_number_exists(acc_num):
-        msg["errmsg"] = 'Invalid account number'
+        msg["error"] = 'Invalid account number'
         msg["result"] = 'failed'
         return msg
 
     account_type =  get_account_type(acc_num)
     if account_type == ACCOUNT_TYPE_DEPOSIT:
-        msg["errmsg"] = 'Transfer not allowed to/from deposit account'
+        msg["error"] = 'Transfer not allowed to/from deposit account'
         msg["result"] = 'failed'
         return msg
 
     if is_account_on_hold(acc_num):
-        msg["errmsg"] = 'Account put on hold'
+        msg["error"] = 'Account put on hold'
         msg["result"] = 'failed'
         return msg
 
     if exceeds_daily_transfer_limit(account_type, amount):
-        msg["errmsg"] = 'This transaction exceeds daily transaction limit'
+        msg["error"] = 'This transaction exceeds daily transaction limit'
         msg["result"] = 'failed'
         return msg
 
@@ -271,7 +270,7 @@ def deposit(request):
     add_transaction_to_db(transaction)
     mailer.root.sendDepositUpdate(transaction)
     msg["result"] = 'passed'
-    msg["errmsg"] = 'Deposit Complete!'
+    msg["error"] = 'Deposit Complete!'
     return msg
 
 
@@ -306,7 +305,7 @@ def withdraw(request):
     mailer.root.sendWithdrawUpdate(transaction)
 
     msg["result"] = 'passed'
-    msg["errmsg"] = 'Withdraw Complete!'
+    msg["error"] = 'Withdraw Complete!'
     return msg
 
 
@@ -320,7 +319,7 @@ def get_teller_details(request):
     del employee["_id"]
     msg["data"] = employee
     msg["result"] = 'passed'
-    msg["errmsg"] = 'success'
+    msg["error"] = 'success'
     return msg
 
 

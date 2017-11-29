@@ -41,12 +41,16 @@ def send_data_to_peer(con, data):
     return 0
 
 
-def get_all_installed_servers():
-    return SERVERS.split(",")
+def get_all_installed_socket_servers():
+    return SOCKET_SERVERS.split(",")
+
+
+def get_all_installed_smtp_clients():
+    return SMTP_CLIENT_SERVERS.split(",")
 
 
 def get_connection_to_email_service():
-    servers = get_all_installed_servers()
+    servers = get_all_installed_smtp_clients()
     for server in servers:
         try:
             mailer = rpyc.connect(server, EMAIL_SERVICE_PORT)
@@ -58,7 +62,7 @@ def get_connection_to_email_service():
 
 
 def get_connection_to_server():
-    servers = get_all_installed_servers()
+    servers = get_all_installed_socket_servers()
     sock = socket.socket()
     for server in servers:
         sock.settimeout(3)
