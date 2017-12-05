@@ -111,6 +111,7 @@ def create_customer_account(account_type, details):
     account["name"] = details["name"]
     account["email"] = details["email"]
     account["ssn"] = details["ssn"]
+    account["address"] = details["address"]
     account["type"] = account_type
     account["username"] = username
     account["password"] = password
@@ -165,7 +166,7 @@ def generate_username():
     username = ''
     while True:
         for i in range(USERNAME_MIN_LENGTH):
-            username += random.choice(string.lowercase + string.uppercase + string.digits)
+            username += random.choice(string.digits)
 
         if not username_exists(username):
             return username
@@ -183,13 +184,11 @@ def generate_employee_id():
     employees = get_employees_collection(db)
     last = employees.find_one(sort=[("employee_id", pymongo.DESCENDING)])
     if not last:
-        new_id = "001"
+        new_id = 1
     else:
-        str_len = len(str(last["employee_id"]))
-        new_id = (3 - str_len) * "0" + str(last["employee_id"])
+        new_id = last["employee_id"] + 1
 
-    employee_id = str(now.year) + new_id
-    return employee_id
+    return new_id
 
 
 def get_account_summary_by_username(username):

@@ -74,7 +74,7 @@ def delete_account(request):
     msg = {}
     user_type = request.get("user_type")
     if user_type == USER_TYPE_CUSTOMER:
-        acc_num = request.get("account_number")
+        acc_num = long(request.get("account_number"))
         if not account_number_exists(acc_num):
             raise Exception("Account does not exist!")
 
@@ -96,7 +96,7 @@ def delete_account(request):
 
 def freeze_account(request):
     msg = {}
-    acc_num = request.get("account_number")
+    acc_num = int(request.get("account_number"))
     if not account_number_exists(acc_num):
         raise Exception("Account does not exist!")
 
@@ -110,7 +110,7 @@ def freeze_account(request):
 
 def reactivate_account(request):
     msg = {}
-    acc_num = request.get("account_number")
+    acc_num = int(request.get("account_number"))
     if not account_number_exists(acc_num):
         raise Exception("Account does not exist!")
 
@@ -126,10 +126,12 @@ def validate_funds_transfer(request):
     username = request.get("username")
     payer_acc = get_account_details_by_username(username)
 
-    payee_acc_num = request["account_number"]
+    payee_acc_num = long(request["account_number"])
     payee_acc = get_account_details_by_account_number(payee_acc_num)
 
-    amount = request["amount"]
+    amount = long(request["amount"])
+    log.debug("##################### Payer: %s"%str(payer_acc))
+    log.debug("##################### payee: %s"%str(payee_acc))
 
     if not username_exists(username):
         raise Exception("User account does not exist!")
@@ -176,10 +178,13 @@ def transfer(request):
     payee_update = {}
 
     username = request.get("username")
+    log.debug("##################### Username: %s"%str(username))
     payer_acc = get_account_details_by_username(username)
-    payee_acc = get_account_details_by_account_number(request["account_number"])
-    amount = request["amount"]
+    payee_acc = get_account_details_by_account_number(long(request["account_number"]))
+    amount = long(request["amount"])
 
+    log.debug("##################### Payer #1: %s"%str(payer_acc))
+    log.debug("##################### payee #1: %s"%str(payee_acc))
     validation = validate_funds_transfer(request)
     if validation["result"] != 'passed':
         return validation
@@ -218,8 +223,8 @@ def transfer(request):
 def validate_deposit_or_withdraw(request):
     msg = {}
 
-    acc_num = request.get("account_number")
-    amount = request["amount"]
+    acc_num = long(request.get("account_number"))
+    amount = long(request["amount"])
 
     if not account_number_exists(acc_num):
         msg["error"] = 'Invalid account number'
@@ -247,14 +252,16 @@ def validate_deposit_or_withdraw(request):
 
 
 def deposit(request):
+    log.debug("Request: %s"%str(request))
     msg = {}
-    acc_num = request.get("account_number")
-    amount = request["amount"]
+    acc_num = long(request.get("account_number"))
+    amount = long(request["amount"])
 
     validation = validate_deposit_or_withdraw(request)
     if validation["result"] != 'passed':
         return validation
 
+    log.debug("Deposit validated: %s"%str(validation))
     transaction = {}
     transaction["account_number"] = acc_num
     transaction["type"] = TRANSACTION_TYPE_DEPOSIT
@@ -264,10 +271,12 @@ def deposit(request):
     transaction["mode"] = "Cash Deposit"
 
     cur_bal = get_account_balance(acc_num)
+    log.debug("Current balance: %s"%str(cur_bal))
     new_balance = cur_bal + amount
     update_account_balance(acc_num, new_balance)
 
     add_transaction_to_db(transaction)
+    log.debug("Mailer: %s"%str(mailer))
     mailer.root.sendDepositUpdate(transaction)
     msg["result"] = 'passed'
     msg["error"] = 'Deposit Complete!'
@@ -276,8 +285,8 @@ def deposit(request):
 
 def withdraw(request):
     msg = {}
-    acc_num = request.get("account_number")
-    amount = request["amount"]
+    acc_num = long(request.get("account_number"))
+    amount = long(request["amount"])
 
     validation = validate_deposit_or_withdraw(request)
     if validation["result"] != 'passed':

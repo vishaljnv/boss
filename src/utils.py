@@ -79,20 +79,23 @@ def get_connection_to_server():
 
 def send_command_to_server(cmd):
     error = None
+    server = None
+    print "Sending command to server"
     try:
         server = get_connection_to_server()
         if not server:
             raise Exception("All servers down! Please Try again after some time.")
 
         send_data_to_peer(server, cmd)
+
+        return server, error
+
     except Exception, ex:
         error = str(ex)
 
-    return server, error
-
 
 def get_mongo_connection():
-    return pymongo.MongoClient(SERVERS, MONGO_DB_PORT, fsync=True)
+    return pymongo.MongoClient(MONGO_SERVERS, MONGO_DB_PORT, fsync=True)
 
 
 def get_banking_db(mongo_con):

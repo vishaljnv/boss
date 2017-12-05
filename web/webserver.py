@@ -1,6 +1,10 @@
 #!/home/vishal/anaconda2/bin/python
 import os
 import sys
+import random
+import string
+import datetime
+
 sys.path.append("..")
 
 import bottle
@@ -21,6 +25,7 @@ log = get_logger(logFileName="webServer.log")
 con = get_mongo_connection()
 db = get_banking_db(con)
 
+ROOT_PATH = "/opt/boss/web/client"
 
 def json_friendly(obj):
     if not obj or type(obj) in (int, float, str, unicode, bool, long):
@@ -57,6 +62,7 @@ def check_authorized():
             db_user = users.find_one({'session_id':session_id})
 
             if db_user:
+                db_user["_id"] = str(db_user["_id"])
                 return db_user
             else :
                 error = 'unauthorized'
@@ -65,7 +71,7 @@ def check_authorized():
     except Exception, ex:
         log.error("check_authorized: Exception: %s"%str(ex))
         bottle.abort(500, json.dumps({ 'error' : str(ex)}))
-    if errors:
+    if error:
         log.error("check_authorized: error: %s"%error)
         bottle.abort(401, json.dumps({'error': error}))
 
@@ -112,11 +118,15 @@ def create_session():
             users.save(db_user)
             response.set_cookie('session_id', session_id)
             success = True
+            print "DB User:",db_user
     except Exception, ex:
         log.error("Exception in create_sessions: %s"%str(ex))
     if success:
         #pass
-        redirect('/sessions/mine')
+        if db_user["username"] == "admin":
+            serve_static_file("admin_home.html")
+
+        return {"users":json_friendly(db_user)}
     else:
         bottle.abort(400, json.dumps({ 'error' : 'unauthorized'}))
 
@@ -160,19 +170,17 @@ def delete_session():
         bottle.abort(400, json.dumps({'error': error}))
 
 
-@route('/', methods=['GET','POST'])
+@route('/', method='GET')
 def index():
-    return render_template('index.html')
+    return serve_static_file('index.html')
 
-@route('/accounts',methods=['GET'])
+@route('/accounts')
 def get_account_summary():
     error = None
-    user = check_authorized()
 
-    form = json.load(bottle.request.body)
     cmd = {}
     cmd["cmd"] = CMD_GET_ACCOUNT_SUMMARY
-    cmd["account_number"] = form["account_number"]
+    cmd["username"] = bottle.request.query.s
 
     server, error = send_command_to_server(cmd)
 
@@ -191,10 +199,10 @@ def get_account_summary():
     return reply
 
 
-@route('/accounts',methods=['POST'])
+@route('/accounts',method='POST')
 def create_account():
     error = None
-    user = check_authorized()
+    #user = check_authorized()
 
     form = json.load(bottle.request.body)
     cmd = {}
@@ -222,20 +230,20 @@ def create_account():
 
     return reply
 
-@route('/accounts',methods=['PUT'])
+@route('/accounts',method='PUT')
 def freeze_or_reactivate_account():
     error = None
-    user = check_authorized()
+    #user = check_authorized()
 
-    form = json.load(bottle.request.body)
+    acc_num = str(bottle.request.query.s)
     cmd = {}
-    if form["cmd"] == 'freeze':
-        cmd["cmd"] = CMD_FREEZE_ACCOUNT
-    else:
-        cmd["cmd"] = CMD_REACTIVATE_ACCOUNT
+    print "Form: ",type(acc_num)
+    cmd["cmd"] = CMD_FREEZE_ACCOUNT
+    cmd["account_number"] = acc_num
 
-    cmd["account_number"] = form["account_number"]
-
+    accounts = get_accounts_collection(db)
+    accounts.update({"number":long(acc_num)},{"$set":{"hold":True}})
+    '''
     server, error = send_command_to_server(cmd)
 
     try:
@@ -249,18 +257,50 @@ def freeze_or_reactivate_account():
 
     if error:
         return {"error":error, "result":"failed"}
+    '''
+    return {}
 
-    return reply
 
-@route('/accounts',methods=['DELETE'])
+@route('/accounts-re',method='PUT')
+def freeze_or_reactivate_account():
+    error = None
+    #user = check_authorized()
+
+    acc_num = str(bottle.request.query.s)
+    print "Form: ",acc_num
+    cmd = {}
+    cmd["cmd"] = CMD_REACTIVATE_ACCOUNT
+    cmd["account_number"] = acc_num
+
+    accounts = get_accounts_collection(db)
+    accounts.update({"number":long(acc_num)},{"$set":{"hold":False}})
+    '''
+    server, error = send_command_to_server(cmd)
+
+    try:
+        reply = get_data_from_peer(server)
+    except Exception, ex:
+        error = str(ex)
+        log.error("Exception: %s"%error)
+
+    if reply.get("result") != 'passed':
+        error = reply.get("error")
+
+    if error:
+        return {"error":error, "result":"failed"}
+    '''
+    return {}
+
+@route('/accounts',method='DELETE')
 def delete_account():
     error = None
-    user = check_authorized()
+    #user = check_authorized()
 
-    form = json.load(bottle.request.body)
+    acc_num = bottle.request.query.s
     cmd = {}
     cmd["cmd"] = CMD_DELETE_ACCOUNT
-    cmd["account_number"] = form["account_number"]
+    cmd["account_number"] = acc_num
+    cmd["user_type"] = USER_TYPE_CUSTOMER
 
     server, error = send_command_to_server(cmd)
 
@@ -274,19 +314,20 @@ def delete_account():
         error = reply.get("error")
 
     if error:
+        bottle.abort(400, json.dumps({ 'error' : error}))
         return {"error":error, "result":"failed"}
 
     return reply
 
-@route('/transfer',methods=['POST'])
+@route('/transfer',method='POST')
 def transfer_funds():
     error = None
-    user = check_authorized()
+    #user = check_authorized()
 
     form = json.load(bottle.request.body)
     cmd = {}
     cmd["cmd"] = CMD_TRANSFER_FUNDS
-    cmd["username"] = user["username"]
+    cmd["username"] = form["username"]
     cmd["account_number"] = form["account_number"]
     cmd["amount"] = form["amount"]
 
@@ -302,22 +343,23 @@ def transfer_funds():
 	error = reply.get("error")
 
     if error:
-	return {"error":error, "result":"failed"}
+        bottle.abort(400, json.dumps({ 'error' : error}))
 
     return reply
 
 
-@route('/deposit',methods=['POST'])
+@route('/deposit',method='POST')
 def deposit_funds():
     error = None
-    user = check_authorized()
+    #user = check_authorized()
 
     form = json.load(bottle.request.body)
     cmd = {}
     cmd["cmd"] = CMD_DEPOSIT_FUNDS
-    cmd["account_number"] = form["account_number"]
+    cmd["account_number"] = long(form["account_number"])
     cmd["amount"] = form["amount"]
 
+    print form
     server, error = send_command_to_server(cmd)
 
     try:
@@ -326,19 +368,20 @@ def deposit_funds():
 	error = str(ex)
 	log.error("Exception: %s"%error)
 
+    print "Reply:", reply
     if reply.get("result") != 'passed':
 	error = reply.get("error")
 
     if error:
-	return {"error":error, "result":"failed"}
+        bottle.abort(400, json.dumps({ 'error' : error}))
 
     return reply
 
 
-@route('/withdraw',methods=['POST'])
+@route('/withdraw',method='POST')
 def withdraw_funds():
     error = None
-    user = check_authorized()
+    #user = check_authorized()
 
     form = json.load(bottle.request.body)
     cmd = {}
@@ -358,20 +401,20 @@ def withdraw_funds():
 	error = reply.get("error")
 
     if error:
-	return {"error":error, "result":"failed"}
+        bottle.abort(400, json.dumps({ 'error' : error}))
 
     return reply
 
 
-@route('/users',methods=['PUT'])
+@route('/users',method='PUT')
 def change_password():
     error = None
     users = get_users_collection(db)
-    user = check_authorized()
+    #user = check_authorized()
 
     form = json.load(bottle.request.body)
 
-    user_acc = users.find_one({"username":user["username"]})
+    user_acc = users.find_one({"username":form["username"]})
     if not user_acc:
         return {"error":"User account does not exist", "result":"failed"}
 
@@ -388,17 +431,15 @@ def change_password():
 @route('/tellers',method='GET')
 def get_teller_details():
     error = None
-    user = check_authorized()
+    #user = check_authorized()
 
-    form = json.load(bottle.request.body)
     cmd = {}
     cmd["cmd"] = CMD_GET_TELLER_DETAILS
     cmd["employee_id"] = form["employee_id"]
 
-    server, error = send_command_to_server(cmd)
-
     try:
-        reply = get_data_from_peer(server)
+        all_tels = list(tellers.find())
+        return {"tellers":all_tells}
     except Exception, ex:
         error = str(ex)
         log.error("Exception: %s"%error)
@@ -410,6 +451,91 @@ def get_teller_details():
         return {"error":error}
 
     return reply
+
+@route('/tellers',method='POST')
+def add_teller():
+    error = None
+    reply = {"error":"its fine"}
+    #user = check_authorized()
+
+    form = json.load(bottle.request.body)
+    cmd = {}
+    cmd["cmd"] = CMD_CREATE_ACCOUNT
+    cmd["user_type"] = USER_TYPE_TELLER
+
+    cmd.update(form)
+    print "Tellers: ", form
+ 
+    server, error = send_command_to_server(cmd)
+
+    try:
+        reply = get_data_from_peer(server)
+    except Exception, ex:
+        error = str(ex)
+        log.error("Exception: %s"%error)
+
+    if not reply:
+       return {"error":"Server down"}
+
+    if reply.get("result") != 'passed':
+        error = reply.get("errmsg")
+
+    if error:
+        return {"error":error}
+
+    return reply
+
+
+@route('/tellers',method='DELETE')
+def get_teller_details():
+    error = None
+    reply = {"error":"its fine"}
+    #user = check_authorized()
+
+    emp_id = int(bottle.request.query.s)
+   
+    print emp_id 
+    employees = get_employees_collection(db)
+    users = get_users_collection(db)
+    emp = employees.find_one()
+
+    user = emp["username"]
+    employees.remove({"employee_id":emp_id})
+    users.remove({"username":user})
+ 
+    if not reply:
+       return {"error":"Server down"}
+
+    if reply.get("result") != 'passed':
+        error = reply.get("errmsg")
+
+    if error:
+        return {"error":error}
+
+    return reply
+
+
+@route("/all_tellers", method='GET')
+def get_all_tellers():
+    accounts = get_employees_collection(db)
+    all_acc = list(accounts.find())
+    return {"accounts":json_friendly(all_acc)}
+
+
+@route("/all_accounts", method='GET')
+def get_all_accounts():
+    accounts = get_accounts_collection(db)
+    all_acc = list(accounts.find())
+    return {"accounts":json_friendly(all_acc)}
+
+
+@route("/users")
+def get_user_details():
+    username = bottle.request.query.s
+    users = get_users_collection()
+    
+    user = user.find_one({"username":username})
+    return {"users":json_friendly(user)}
 
 
 if __name__ == '__main__':

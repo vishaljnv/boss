@@ -59,11 +59,11 @@ class EmailClient(rpyc.Service):
 
     def exposed_sendTransferUpdate(self, payer, payee):
         accounts = get_accounts_collection(self.db)
-        payer_acc = accounts.find_one({"number":payer["account_number"]})
+        payer_acc = accounts.find_one({"number":int(payer["account_number"])})
 
         name = payer_acc["name"]
         payee_acc_num = payee["account_number"]
-        payee_acc = accounts.find_one({"number":payee_acc_num})
+        payee_acc = accounts.find_one({"number":int(payee_acc_num)})
 
         sent_msg = get_money_sent_template()
         sent_msg_body = sent_msg.substitute(PAYER_NAME=name.title(), PAYEE_NAME=payee_acc["name"].title(), 
