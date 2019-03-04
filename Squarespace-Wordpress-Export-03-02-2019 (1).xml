@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/">
+  <channel>
+    <title>DDOS</title>
+    <link>https://koala-moose-kx2k.squarespace.com</link>
+    <pubDate>Sat, 02 Mar 2019 22:28:21 +0000</pubDate>
+    <description>DETECTION AND MITIGATION</description>
+    <language>en-US</language>
+    <wp:wxr_version>1.2</wp:wxr_version>
+    <wp:author>
+      <wp:author_id>280929780</wp:author_id>
+      <wp:author_login>reshmashankar23@gmail.com</wp:author_login>
+      <wp:author_email>reshmashankar23@gmail.com</wp:author_email>
+      <wp:author_display_name><![CDATA[RSK KKKK]]></wp:author_display_name>
+      <wp:author_first_name><![CDATA[RSK]]></wp:author_first_name>
+      <wp:author_last_name><![CDATA[KKKK]]></wp:author_last_name>
+    </wp:author>
+    <wp:category>
+      <wp:cat_name><![CDATA[null - null]]></wp:cat_name>
+      <wp:category_nicename>null-null</wp:category_nicename>
+      <wp:category_parent />
+    </wp:category>
+    <item>
+      <link>/share-your-vision</link>
+      <title>Share Your Vision</title>
+      <pubDate>Sat, 02 Mar 2019 22:52:56 +0000</pubDate>
+      <content:encoded><![CDATA[<h1 style="text-align:center;white-space:pre-wrap;">WELCOME</h1>
+<div class="sqs-block-button-container--center" data-alignment="center" data-button-size="medium">
+	<a href="/details" class="sqs-block-button-element--medium sqs-block-button-element" >GET IN</a>
+</div>]]></content:encoded>
+      <wp:post_name>share-your-vision</wp:post_name>
+      <wp:post_type>page</wp:post_type>
+      <wp:post_id>0</wp:post_id>
+      <wp:status>publish</wp:status>
+    </item>
+    <item>
+      <link>/details</link>
+      <title>Details</title>
+      <pubDate>Sat, 02 Mar 2019 22:36:09 +0000</pubDate>
+      <content:encoded><![CDATA[&nbsp;<h1 style="white-space:pre-wrap;">DDoS- the challenge</h1><p style="white-space:pre-wrap;"><strong>A distributed denial-of-service (DDoS) attack is a malicious attempt to disrupt normal traffic of a targeted server, service or network by overwhelming the target or its surrounding infrastructure with a flood of Internet traffic. DDoS attacks achieve effectiveness by utilizing multiple compromised computer systems as sources of attack traffic. Exploited machines can include computers and other networked resources such as IoT devices. From a high level, a DDoS attack is like a traffic jam clogging up with highway, preventing regular traffic from arriving at its desired destination.</strong>  </p>&nbsp;
+  
+      <img src="https://static1.squarespace.com/static/5c7b038529f2cc75829bd53d/t/5c7b052e9b747a0e609e7bcf/1551566132599/ddos+image.jpg?format=original" alt=""/>
+  
+
+&nbsp;&nbsp;]]></content:encoded>
+      <wp:post_name>details</wp:post_name>
+      <wp:post_type>page</wp:post_type>
+      <wp:post_id>1</wp:post_id>
+      <wp:status>publish</wp:status>
+    </item>
+    <item>
+      <link>/theidea</link>
+      <title>Newsletter</title>
+      <pubDate>Sat, 02 Mar 2019 22:45:32 +0000</pubDate>
+      <content:encoded><![CDATA[<h1 style="text-align:center;white-space:pre-wrap;">THE IDEA</h1><p style="text-align:center;white-space:pre-wrap;"><strong><em>The aim of this project is to launch a DDoS attack and study the effects of the attack on the target host. This project is also aiming at the mitigation of the attack with the aid of AWS.</em></strong></p>
+  
+      <img src="https://static1.squarespace.com/static/5c7b038529f2cc75829bd53d/t/5c7b06db9b747a0e609e8ce1/1551566561309/NET+SEC.jpg?format=original" alt=""/>
+  
+
+&nbsp;]]></content:encoded>
+      <wp:post_name>theidea</wp:post_name>
+      <wp:post_type>page</wp:post_type>
+      <wp:post_id>2</wp:post_id>
+      <wp:status>publish</wp:status>
+    </item>
+    <item>
+      <link>/team</link>
+      <title>Team</title>
+      <pubDate>Sat, 02 Mar 2019 23:02:32 +0000</pubDate>
+      <content:encoded><![CDATA[&nbsp;<h1 style="text-align:center;white-space:pre-wrap;">OUR STRENGTH</h1><p style="text-align:center;white-space:pre-wrap;">.</p>&nbsp;&nbsp;<h3 style="white-space:pre-wrap;">You</h3><p style="white-space:pre-wrap;">RACHEL SHANKAR KOTRANNAVAR</p><h3 style="white-space:pre-wrap;">Your Co-Founder</h3><p style="white-space:pre-wrap;">HARDIK ASHOK MEHTA</p>]]></content:encoded>
+      <wp:post_name>team</wp:post_name>
+      <wp:post_type>page</wp:post_type>
+      <wp:post_id>3</wp:post_id>
+      <wp:status>publish</wp:status>
+    </item>
+  </channel>
+</rss>
+
